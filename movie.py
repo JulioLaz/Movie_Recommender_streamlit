@@ -5,6 +5,7 @@ import view_posters as vp
 import menu
 import styles
 import similitud as sim
+import similitud_tfidf as sim_tfidf
 
 # st.set_page_config(page_title="movie recomendation", page_icon='🎦', layout="wide")
 
@@ -23,7 +24,7 @@ elif menu_id == "Genres":
     st.title("Movie Genres")
     st.write("Explore movies by genre")
 
-# elif menu_id == "Top Rated":
+
 elif menu_id == "Most Populars":
     df=pop.recomendacion_populares()
     lista_poster = list(df['poster_path_full'].head(5))
@@ -32,9 +33,27 @@ elif menu_id == "Most Populars":
     lista_averageRating = list(round(df['mean_rating'],1).head(5))
     vp.view_poster(lista_poster,lista_originalTitle,lista_tconst,lista_averageRating)
 
-elif menu_id == "New Releases":
-    st.title("New Releases")
-    st.write("The latest movies to hit the screens")
+elif menu_id == "Top Rated":
+    df_final=ddbb.df_final()
+    df_final = df_final.drop_duplicates(subset='title', keep='first')
+    st.title("Community")
+
+    movie_titles = df_final['title'].tolist()
+    title='Matrix, The'
+    default_index = movie_titles.index(title) if title in movie_titles else 0
+
+    selected_title = st.selectbox("Select a movie you like: Connect with other movie enthusiasts and get personalized recommendations", movie_titles, index=default_index)
+
+    if selected_title:
+        movie_id = df_final[df_final['title'] == selected_title]['movieId'].values[0]
+        recommended_movies = sim_tfidf.recomendacion_tf_idf(movie_id)
+
+        if 'poster_path_full' in recommended_movies.columns:
+            lista_poster = list(recommended_movies['poster_path_full'].head(5))
+            lista_originalTitle = list(recommended_movies['title'].head(5))
+            lista_tconst = list(recommended_movies['imdb_id'].head(5))
+            lista_averageRating = list(round(recommended_movies['rating'], 2).head(5))
+            vp.view_poster(lista_poster, lista_originalTitle, lista_tconst, lista_averageRating)
 
 elif menu_id == "Community": #
     df_final=ddbb.df_final()
@@ -50,7 +69,6 @@ elif menu_id == "Community": #
     if selected_title:
         movie_id = df_final[df_final['title'] == selected_title]['movieId'].values[0]
         recommended_movies = sim.recomendacion_jaccard(movie_id)
-        # st.write("")
 
         if 'poster_path_full' in recommended_movies.columns:
             lista_poster = list(recommended_movies['poster_path_full'].head(5))
@@ -59,6 +77,9 @@ elif menu_id == "Community": #
             lista_averageRating = list(round(recommended_movies['rating'], 2).head(5))
             vp.view_poster(lista_poster, lista_originalTitle, lista_tconst, lista_averageRating)
 
+elif menu_id == "New Releases":
+    st.title("New Releases")
+    st.write("The latest movies to hit the screens")
 
 elif menu_id == "Login":
     st.title("Login")

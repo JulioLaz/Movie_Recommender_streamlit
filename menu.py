@@ -31,9 +31,9 @@ def menu():
       ]},
 
       {'icon': "fas fa-star", 'label': "Most Populars"},
-      # {'icon': "fas fa-star", 'label': "Top Rated"},
-      {'icon': "fas fa-calendar-alt", 'label': "New Releases"},
+      {'icon': "fas fa-star", 'label': "Top Rated"},
       {'icon': "fas fa-users", 'label': "Community"},
+      {'icon': "fas fa-calendar-alt", 'label': "New Releases"},
    ]
 
    over_theme = {
