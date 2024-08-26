@@ -8,7 +8,7 @@ import similitud as sim
 import similitud_tfidf as sim_tfidf
 import similitud_knn as sim_knn
 import pandas as pd
-
+import ver_poster
 # st.set_page_config(page_title="movie recomendation", page_icon='🎦', layout="wide")
 
 df_movies = ddbb.df_merge_movies_ratings()
@@ -32,7 +32,8 @@ elif menu_id == "Most Populars":
     lista_originalTitle = list(df['title'].head(5))
     lista_tconst = list(df['imdb_id'].head(5))
     lista_averageRating = list(round(df['mean_rating'],1).head(5))
-    vp.view_poster(lista_poster,lista_originalTitle,lista_tconst,lista_averageRating)
+    ver_poster.view_poster(lista_poster,lista_originalTitle,lista_tconst,lista_averageRating)
+    # vp.view_poster(lista_poster,lista_originalTitle,lista_tconst,lista_averageRating)
 
 elif menu_id == "Top Rated":
     df_final=ddbb.df_final()
@@ -93,9 +94,9 @@ elif menu_id == "Just for you":
     rating = st.slider(f"Rate {selected_movie_title}", 1, 5, 3)
     user_ratings = {selected_movie_id: rating}
 
-    st.write("Your Ratings:", user_ratings)
+    # st.write("Your Ratings:", user_ratings)
     usuario = pd.Series(user_ratings)
-    print(usuario)
+    # print(usuario)
     if st.button('Get Recommendations'):
         recommendations = sim_knn.recomendacion_knn(usuario)
         st.write(recommendations)    

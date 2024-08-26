@@ -50,8 +50,6 @@ def view_poster(lista_poster,lista_originalTitle,lista_tconst,lista_averageRatin
                      </div>
                      """, unsafe_allow_html=True
                   )
-      # st.title("Top Rated Movies")
-      # st.write("Check out the highest-rated films")
 
 def title_poster_genre(menu_id):
     st.markdown(f"""

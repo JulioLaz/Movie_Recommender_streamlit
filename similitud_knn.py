@@ -33,7 +33,7 @@ def recomendacion_knn(user_input):
         new_df_movies = new_user_ratings.merge(df_movies, on='movieId', how='left')
         selected_movie_genres = new_df_movies[new_df_movies['movieId'].isin(user_input.index)]['genre_set']
         selected_genres = set().union(*selected_movie_genres)
-        print(selected_genres)
+      #   print(selected_genres)
         df_final_filtered = df_final[df_final['genre_set'].apply(lambda x: bool(selected_genres & x))]
         df_final_filtered=df_final_filtered.copy()
         df_final_filtered.drop_duplicates(subset=['movieId'], inplace=True)
@@ -60,7 +60,7 @@ def recomendacion_knn(user_input):
         knn_model.fit(ratings_matrix_normalized.values)
         idx = ratings_matrix_normalized.index.get_loc(df_agg_final.userId.max())      
         distances, indices = knn_model.kneighbors(ratings_matrix_normalized.iloc[idx].values.reshape(1, -1), n_neighbors=n_recommendations + 1)
-        
+
     distances = distances.flatten()[1:]
     indices = indices.flatten()[1:]
 

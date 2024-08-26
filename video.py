@@ -9,7 +9,6 @@ from selenium.webdriver.chrome.options import Options
 import time
 
 def open_and_click(tt):
-    # Configurar opciones de Chrome para permitir la reproducción automática
     chrome_options = Options()
     chrome_options.add_argument("--autoplay-policy=no-user-gesture-required")
     chrome_options.add_experimental_option("prefs", {"profile.default_content_setting_values.media_stream": 1})
