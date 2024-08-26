@@ -8,6 +8,9 @@ import similitud as sim
 import similitud_tfidf as sim_tfidf
 import similitud_knn as sim_knn
 import pandas as pd
+
+# st.set_page_config(page_title="Ventas ecommerce Brazil", page_icon=":shopping_bags:", layout="wide")
+
 # st.set_page_config(page_title="movie recomendation", page_icon='🎦', layout="wide")
 
 # df = data.data_genre_explode()
