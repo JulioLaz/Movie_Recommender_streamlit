@@ -101,6 +101,7 @@ def view_poster(lista_poster,lista_originalTitle,lista_tconst,lista_averageRatin
                 <style>
                     [data-testid="stSidebar"][aria-expanded="true"] > div:first-child {
                         width: 40vw;
+                     background-color:red;
                     }
                     /* wihdt sidebar */
                     #root > div:nth-child(1) > div.withScreencast > div > div > div > section.st-emotion-cache-1i4v8s7.eczjsme18{
@@ -108,8 +109,8 @@ def view_poster(lista_poster,lista_originalTitle,lista_tconst,lista_averageRatin
                      width:40vw !important
                      }
                      #root > div:nth-child(1) > div.withScreencast > div > div > div > section.st-emotion-cache-1ec6rqw.eczjsme11{
-                     width: none !important;
-                     }
+                     max-width: none !important;
+                     width:40vw !important                     }
                      /* sidebar */
                      #root > div:nth-child(1) > div.withScreencast > div > div > div > section.st-emotion-cache-1ec6rqw.eczjsme11 > div.st-emotion-cache-6qob1r.eczjsme3 > div.st-emotion-cache-16txtl3.eczjsme4{
                      padding: 1.5rem 1.5rem;}
