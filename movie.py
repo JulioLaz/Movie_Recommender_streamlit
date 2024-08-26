@@ -11,6 +11,7 @@ import pandas as pd
 
 # st.set_page_config(page_title="Ventas ecommerce Brazil", page_icon=":shopping_bags:", layout="wide")
 
+# st.set_page_config(layout="wide")
 # st.set_page_config(page_title="movie recomendation", page_icon='🎦', layout="wide")
 
 # df = data.data_genre_explode()
@@ -82,6 +83,10 @@ elif menu_id == "Community": #
             vp.view_poster(lista_poster, lista_originalTitle, lista_tconst, lista_averageRating)
 
 elif menu_id == "New Releases":
+    st.title("New Releases")
+    st.write("The latest movies to hit the screens")
+
+elif menu_id == "Just for you":
     # st.title("New Releases")
     # st.write("The latest movies to hit the screens")
     st.title('Movie Recommendation System')
