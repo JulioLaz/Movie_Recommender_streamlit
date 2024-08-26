@@ -10,6 +10,7 @@ import similitud_knn as sim_knn
 import pandas as pd
 import ver_poster
 # st.set_page_config(page_title="movie recomendation", page_icon='🎦', layout="wide")
+# st.set_page_config(layout="wide")
 
 df_movies = ddbb.df_merge_movies_ratings()
 
