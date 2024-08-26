@@ -9,12 +9,8 @@ import similitud_tfidf as sim_tfidf
 import similitud_knn as sim_knn
 import pandas as pd
 
-# st.set_page_config(page_title="Ventas ecommerce Brazil", page_icon=":shopping_bags:", layout="wide")
-
-# st.set_page_config(layout="wide")
 # st.set_page_config(page_title="movie recomendation", page_icon='🎦', layout="wide")
 
-# df = data.data_genre_explode()
 df_movies = ddbb.df_merge_movies_ratings()
 
 styles.styles_main()
@@ -87,8 +83,6 @@ elif menu_id == "New Releases":
     st.write("The latest movies to hit the screens")
 
 elif menu_id == "Just for you":
-    # st.title("New Releases")
-    # st.write("The latest movies to hit the screens")
     st.title('Movie Recommendation System')
 
     df_final=ddbb.df_final()

@@ -33,6 +33,13 @@ def styles_main():
    /*  margin beetwen selected and posters */
    #root > div:nth-child(1) > div.withScreencast > div > div > div > section > div.block-container.st-emotion-cache-13ln4jf.ea3mdgi5 > div > div > div > div:nth-child(12) > div > div > div{
    margin-bottom:10px}
+
+   /* widht  */
+   #root > div:nth-child(1) > div.withScreencast > div > div > div > section > div.block-container.st-emotion-cache-gh2jqd.ea3mdgi5{
+   max-width: none !important;
+   padding-left: 1rem;
+   padding-right: 1rem;
+   }
     </style>
    '''
    st.markdown(element_style, unsafe_allow_html=True)   

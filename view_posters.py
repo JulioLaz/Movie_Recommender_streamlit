@@ -1,4 +1,3 @@
-import populares as pop
 import requests
 from io import BytesIO
 import streamlit as st
