@@ -40,10 +40,7 @@ def styles_main():
    padding-left: 1rem;
    padding-right: 1rem;
    }
-   #root > div:nth-child(1) > div.withScreencast > div > div > div > section.st-emotion-cache-1ec6rqw.eczjsme11{
-   width: none !important;
-   
-   }
+
     </style>
    '''
    st.markdown(element_style, unsafe_allow_html=True)   
