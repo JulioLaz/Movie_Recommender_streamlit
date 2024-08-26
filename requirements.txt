@@ -6,3 +6,4 @@ pytz
 hydralit-components
 Pillow
 requests
+webdriver-manager
