@@ -6,8 +6,9 @@ import video
 from dotenv import load_dotenv
 import os
 
-load_dotenv()  # Carga las variables del archivo .env
-API_KEY = os.getenv("KEY")
+# load_dotenv()  # Carga las variables del archivo .env
+# API_KEY = os.getenv("KEY")
+API_KEY = st.secrets["KEY"]
 
 def obtener_info_pelicula(imdb_id):
     url = f"http://www.omdbapi.com/?i={imdb_id}&apikey={API_KEY}"
