@@ -11,7 +11,7 @@ def recomendacion_knn(user_input):
 
     
     df_agg = df_final.groupby(['userId', 'movieId'])['rating'].mean().reset_index()
-    n_recommendations=10
+    n_recommendations=5
     if isinstance(user_input, int):
         print('Existing user')
         print(df_agg.userId.max())
@@ -40,8 +40,6 @@ def recomendacion_knn(user_input):
 
         df_agg = df_final_filtered.groupby(['userId', 'movieId'])['rating'].mean().reset_index()
         df_agg_final = pd.concat([df_agg, new_user_ratings], ignore_index=True)
-
-      #   df_agg = pd.concat([df_agg, new_user_ratings], ignore_index=True)
         ratings_matrix = df_agg_final.pivot(index='userId', columns='movieId', values='rating')
         avg_ratings = ratings_matrix.mean(axis=1, skipna=True)
         ratings_matrix_normalized = ratings_matrix.sub(avg_ratings, axis=0).fillna(0)
@@ -49,11 +47,20 @@ def recomendacion_knn(user_input):
         knn_model.fit(ratings_matrix_normalized.values)
         idx = ratings_matrix_normalized.index.get_loc(df_agg_final.userId.max())
 
-
     max_neighbors = min(n_recommendations + 1, len(ratings_matrix_normalized))
-    distances, indices = knn_model.kneighbors(ratings_matrix_normalized.iloc[idx].values.reshape(1, -1), n_neighbors=max_neighbors)
-
-   #  distances, indices = knn_model.kneighbors(ratings_matrix_normalized.iloc[idx].values.reshape(1, -1), n_neighbors=n_recommendations + 1)
+    if max_neighbors >= 5:
+      distances, indices = knn_model.kneighbors(ratings_matrix_normalized.iloc[idx].values.reshape(1, -1), n_neighbors=max_neighbors)
+    else:
+        df_agg = df_final.groupby(['userId', 'movieId'])['rating'].mean().reset_index()
+        df_agg_final = pd.concat([df_agg, new_user_ratings], ignore_index=True)
+        ratings_matrix = df_agg_final.pivot(index='userId', columns='movieId', values='rating')
+        avg_ratings = ratings_matrix.mean(axis=1, skipna=True)
+        ratings_matrix_normalized = ratings_matrix.sub(avg_ratings, axis=0).fillna(0)
+        knn_model = NearestNeighbors(metric='cosine', algorithm='brute')
+        knn_model.fit(ratings_matrix_normalized.values)
+        idx = ratings_matrix_normalized.index.get_loc(df_agg_final.userId.max())      
+        distances, indices = knn_model.kneighbors(ratings_matrix_normalized.iloc[idx].values.reshape(1, -1), n_neighbors=n_recommendations + 1)
+        
     distances = distances.flatten()[1:]
     indices = indices.flatten()[1:]
 
