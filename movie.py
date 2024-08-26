@@ -6,7 +6,8 @@ import menu
 import styles
 import similitud as sim
 import similitud_tfidf as sim_tfidf
-
+import similitud_knn as sim_knn
+import pandas as pd
 # st.set_page_config(page_title="movie recomendation", page_icon='🎦', layout="wide")
 
 # df = data.data_genre_explode()
@@ -78,8 +79,34 @@ elif menu_id == "Community": #
             vp.view_poster(lista_poster, lista_originalTitle, lista_tconst, lista_averageRating)
 
 elif menu_id == "New Releases":
-    st.title("New Releases")
-    st.write("The latest movies to hit the screens")
+    # st.title("New Releases")
+    # st.write("The latest movies to hit the screens")
+    st.title('Movie Recommendation System')
+
+    df_final=ddbb.df_final()
+    movies = df_final[['movieId', 'title']].drop_duplicates()
+    selected_movie_title = st.selectbox('Search and select a movie to rate', movies['title'])
+    selected_movie_id = int(movies[movies['title'] == selected_movie_title]['movieId'].values[0])
+
+    rating = st.slider(f"Rate {selected_movie_title}", 1, 5, 3)
+    user_ratings = {selected_movie_id: rating}
+
+    st.write("Your Ratings:", user_ratings)
+    usuario = pd.Series(user_ratings)
+    print(usuario)
+    if st.button('Get Recommendations'):
+        recommendations = sim_knn.recomendacion_knn(usuario)
+        st.write(recommendations)    
+
+    recommended_movies = sim_knn.recomendacion_knn(usuario)
+
+    if 'poster_path_full' in recommended_movies.columns:
+            lista_poster = list(recommended_movies['poster_path_full'].head(5))
+            lista_originalTitle = list(recommended_movies['title'].head(5))
+            lista_tconst = list(recommended_movies['imdb_id'].head(5))
+            lista_averageRating = list(round(recommended_movies['rating'], 2).head(5))
+            vp.view_poster(lista_poster, lista_originalTitle, lista_tconst, lista_averageRating)
+
 
 elif menu_id == "Login":
     st.title("Login")

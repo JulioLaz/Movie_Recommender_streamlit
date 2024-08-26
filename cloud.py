@@ -1,10 +1,7 @@
 import streamlit as st
-import plotly.express as px
-import pandas as pd
 from PIL import Image
 import requests
 from io import BytesIO
-import numpy as np
 import hydralit_components as hc
 
 @st.cache_data(ttl=300)

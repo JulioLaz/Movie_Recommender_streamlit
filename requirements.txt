@@ -1,2 +1,11 @@
 streamlit==1.33.0
 streamlit-navigation-bar==3.3.0
+selenium
+sklearn.neighbors
+datetime
+pytz
+re
+hydralit_components
+io
+PIL
+requests
