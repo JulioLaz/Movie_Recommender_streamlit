@@ -2,8 +2,7 @@ import requests
 from io import BytesIO
 import streamlit as st
 from PIL import Image
-import video
-
+import webbrowser
 # load_dotenv()  # Carga las variables del archivo .env
 # API_KEY = os.getenv("KEY")
 API_KEY = st.secrets["KEY"]
@@ -95,15 +94,19 @@ def view_poster(lista_poster,lista_originalTitle,lista_tconst,lista_averageRatin
                     </div>
                     """, unsafe_allow_html=True
                 )
+
+                def open_imdb_video(url):
+                    # url = f"https://www.imdb.com/title/{tt}/"
+                    webbrowser.open_new_tab(url)
+
                 col1,col2=st.columns(2)
                 with col1:
                   if st.button('Ver trailer', key=f'btn_trailer_{i}'):
                     #  if st.button("Cargar Video"):
-                            tt = "tt0111161"  # Ejemplo de ID de película
                             video_url = f"https://www.imdb.com/title/{lista_tconst[i]}/"
                             # if video_url:
-                            st.markdown(f"[Abrir video]({video_url})")
-
+                            # st.markdown(f"[Abrir video]({video_url})")
+                            open_imdb_video(video_url)
 
                             #  video.open_and_click(lista_tconst[i])
                 with col2:
