@@ -3,8 +3,6 @@ from io import BytesIO
 import streamlit as st
 from PIL import Image
 import video
-from dotenv import load_dotenv
-import os
 
 # load_dotenv()  # Carga las variables del archivo .env
 # API_KEY = os.getenv("KEY")
@@ -50,8 +48,24 @@ def view_movie_details(imdb_id):
             st.write(f"**Premios:** {details['Awards']}")
             st.write("**Descripción:**")
             st.write(details['descripcion'])
-    else:
-        st.error("No se pudo obtener la información de la película.")
+
+        # Star rating section
+      #   st.write("**Rate this movie:**")
+        
+   #    #   rating = st.slider("Select your rating:", min_value=1, max_value=5, value=3)
+   #      rating=3
+   #      # Display stars based on selected rating
+   #      star_full = Image.open('img/star.png')
+   #      star_empty = Image.open('img/star-solid.png')
+   #      for i in range(1, 6):
+   #          if i <= rating:
+   #              st.image(star_full, width=30)
+   #          else:
+   #              st.image(star_empty, width=30)
+
+   #      st.write(f"Your rating: {rating} stars")            
+   #  else:
+   #      st.error("No se pudo obtener la información de la película.")
 
 def view_poster(lista_poster,lista_originalTitle,lista_tconst,lista_averageRating):
     cols = st.columns(5)

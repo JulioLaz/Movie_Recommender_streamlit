@@ -9,6 +9,7 @@ import similitud_tfidf as sim_tfidf
 import similitud_knn as sim_knn
 import pandas as pd
 import ver_poster
+import star_rating as stars
 # st.set_page_config(page_title="movie recomendation", page_icon='🎦', layout="wide")
 # st.set_page_config(layout="wide")
 
@@ -42,9 +43,8 @@ elif menu_id == "Top Rated":
     st.title("Community")
 
     movie_titles = df_final['title'].tolist()
-    title='Matrix, The'
+    title='Titanic'
     default_index = movie_titles.index(title) if title in movie_titles else 0
-
     selected_title = st.selectbox("Select a movie you like: Connect with other movie enthusiasts and get personalized recommendations", movie_titles, index=default_index)
 
     if selected_title:
@@ -56,7 +56,8 @@ elif menu_id == "Top Rated":
             lista_originalTitle = list(recommended_movies['title'].head(5))
             lista_tconst = list(recommended_movies['imdb_id'].head(5))
             lista_averageRating = list(round(recommended_movies['rating'], 2).head(5))
-            vp.view_poster(lista_poster, lista_originalTitle, lista_tconst, lista_averageRating)
+            ver_poster.view_poster(lista_poster,lista_originalTitle,lista_tconst,lista_averageRating)
+            # vp.view_poster(lista_poster, lista_originalTitle, lista_tconst, lista_averageRating)
 
 elif menu_id == "Community": #
     df_final=ddbb.df_final()
@@ -66,7 +67,6 @@ elif menu_id == "Community": #
     movie_titles = df_final['title'].tolist()
     title='Matrix, The'
     default_index = movie_titles.index(title) if title in movie_titles else 0
-
     selected_title = st.selectbox("Select a movie you like: Connect with other movie enthusiasts and get personalized recommendations", movie_titles, index=default_index)
 
     if selected_title:
@@ -78,7 +78,9 @@ elif menu_id == "Community": #
             lista_originalTitle = list(recommended_movies['title'].head(5))
             lista_tconst = list(recommended_movies['imdb_id'].head(5))
             lista_averageRating = list(round(recommended_movies['rating'], 2).head(5))
-            vp.view_poster(lista_poster, lista_originalTitle, lista_tconst, lista_averageRating)
+            # vp.view_poster(lista_poster, lista_originalTitle, lista_tconst, lista_averageRating)
+            ver_poster.view_poster(lista_poster,lista_originalTitle,lista_tconst,lista_averageRating)
+
 
 elif menu_id == "New Releases":
     st.title("New Releases")
@@ -89,19 +91,23 @@ elif menu_id == "Just for you":
 
     df_final=ddbb.df_final()
     movies = df_final[['movieId', 'title']].drop_duplicates()
-    selected_movie_title = st.selectbox('Search and select a movie to rate', movies['title'])
+    movie_titles = movies['title'].tolist()
+    title='Matrix, The'
+    default_index = movie_titles.index(title) if title in movie_titles else 0
+    
+    selected_movie_title = st.selectbox('Search and select a movie to rate', movies['title'], index=default_index)
     selected_movie_id = int(movies[movies['title'] == selected_movie_title]['movieId'].values[0])
 
-    rating = st.slider(f"Rate {selected_movie_title}", 1, 5, 3)
+    # def star_rating(selected_movie_title):
+    #     rating_options = ["★", "★", "★", "★", "★"]
+    #     rating = st.radio(f"Rate {selected_movie_title}", rating_options, index=2)
+    #     rating_value = rating_options.index(rating) + 1
+    #     return rating_value
+
+    rating = stars.star_rating(selected_movie_title)
     user_ratings = {selected_movie_id: rating}
-
-    # st.write("Your Ratings:", user_ratings)
     usuario = pd.Series(user_ratings)
-    # print(usuario)
-    if st.button('Get Recommendations'):
-        recommendations = sim_knn.recomendacion_knn(usuario)
-        st.write(recommendations)    
-
+    st.write(usuario)
     recommended_movies = sim_knn.recomendacion_knn(usuario)
 
     if 'poster_path_full' in recommended_movies.columns:
