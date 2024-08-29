@@ -48,22 +48,23 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 import time
 
 def open_and_click(tt):
     chrome_options = Options()
-    chrome_options.add_argument("--headless")  # Run in headless mode
+    chrome_options.add_argument("--headless")
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
     chrome_options.add_argument("--autoplay-policy=no-user-gesture-required")
     chrome_options.add_experimental_option("prefs", {"profile.default_content_setting_values.media_stream": 1})
 
     try:
-        driver = webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options)
+        service = Service(ChromeDriverManager().install())
+        driver = webdriver.Chrome(service=service, options=chrome_options)
         driver.get(f"https://www.imdb.com/title/{tt}/")
         
-        # Wait for the element to be present
         element = WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.CLASS_NAME, "ipc-lockup-overlay"))
         )
@@ -75,9 +76,9 @@ def open_and_click(tt):
         else:
             st.warning("No se encontró el enlace. Mostrando la página inicial.")
         
-        time.sleep(5)  # Wait for 5 seconds to let the page load
+        time.sleep(5)
         
-        return driver.current_url  # Return the URL of the loaded page
+        return driver.current_url
         
     except Exception as e:
         st.error(f"Error: {str(e)}")
