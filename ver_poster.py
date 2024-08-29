@@ -105,10 +105,10 @@ def view_poster(lista_poster,lista_originalTitle,lista_tconst,lista_averageRatin
                     #  if st.button("Cargar Video"):
                             video_url = f"https://www.imdb.com/title/{lista_tconst[i]}/"
                             # if video_url:
-                            # st.markdown(f"[Abrir video]({video_url})")
-                            open_imdb_video(video_url)
+                            st.markdown(f"[Abrir video]({video_url})")
+                            # open_imdb_video(video_url)
 
-                            #  video.open_and_click(lista_tconst[i])
+                            # video.open_and_click(lista_tconst[i])
                 with col2:
                   if st.button('Más detalles', key=f'btn_details_{i}'):
                      st.session_state.show_details = lista_tconst[i]
