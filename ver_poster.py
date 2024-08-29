@@ -98,7 +98,14 @@ def view_poster(lista_poster,lista_originalTitle,lista_tconst,lista_averageRatin
                 col1,col2=st.columns(2)
                 with col1:
                   if st.button('Ver trailer', key=f'btn_trailer_{i}'):
-                     video.open_and_click(lista_tconst[i])
+                    #  if st.button("Cargar Video"):
+                            tt = "tt0111161"  # Ejemplo de ID de película
+                            video_url = f"https://www.imdb.com/title/{lista_tconst[i]}/"
+                            # if video_url:
+                            st.markdown(f"[Abrir video]({video_url})")
+
+
+                            #  video.open_and_click(lista_tconst[i])
                 with col2:
                   if st.button('Más detalles', key=f'btn_details_{i}'):
                      st.session_state.show_details = lista_tconst[i]
