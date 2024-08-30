@@ -41,6 +41,23 @@ def styles_main():
    padding-right: 1rem;
    }
 
+/* title of the big fans */
+#top-picks-for-our-biggest-fans{
+   text-align: end;
+    margin-bottom: 5px;
+    padding: 0 !important;}
+
+/*   margin in the title and checkbox */
+#root > div:nth-child(1) > div.withScreencast > div > div > div > section > div.block-container.st-emotion-cache-13ln4jf.ea3mdgi5 > div > div > div > div:nth-child(11){
+margin-bottom: 22px !important}
+    
+/* margin of the checkbox */
+#root > div:nth-child(1) > div.withScreencast > div > div > div > section > div.block-container.st-emotion-cache-13ln4jf.ea3mdgi5 > div > div > div > div:nth-child(11) > div:nth-child(2) > div{
+margin-top:10px !important}
+
+/* label of checkbox */
+#root > div:nth-child(1) > div.withScreencast > div > div > div > section > div.block-container.st-emotion-cache-13ln4jf.ea3mdgi5 > div > div > div > div:nth-child(11) > div:nth-child(2) > div > div > div > div > div:nth-child(1) > div > div > div > div > div > label{
+display: none !important} 
     </style>
    '''
    st.markdown(element_style, unsafe_allow_html=True)   

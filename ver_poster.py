@@ -2,7 +2,6 @@ import requests
 from io import BytesIO
 import streamlit as st
 from PIL import Image
-import webbrowser
 # load_dotenv()  # Carga las variables del archivo .env
 # API_KEY = os.getenv("KEY")
 API_KEY = st.secrets["KEY"]
@@ -22,7 +21,8 @@ def obtener_info_pelicula(imdb_id):
             "Actors": data["Actors"],
             "Runtime": data["Runtime"],
             "Awards": data["Awards"],
-            "Released": data["Released"]
+            "Released": data["Released"],
+            "BoxOffice": data["BoxOffice"],
         }
     else:
         return None
@@ -40,14 +40,17 @@ def view_movie_details(imdb_id):
             st.image(load_image_from_url(details["poster_url"]), use_column_width=True)
         with col2:
             st.title(details["titulo"])
-            st.write(f"**Año:** {details['Released']}")
-            st.write(f"**Director:** {details['director']}")
-            st.write(f"**Actor:** {details['Actors']}")
-            st.write(f"**Duración:** {details['Runtime']}")
-            st.write(f"**Premios:** {details['Awards']}")
-            st.write("**Descripción:**")
-            st.write(details['descripcion'])
-
+            st.write(f"📅 **Año:** {details['Released']}")
+            st.write(f"🎬 **Director:** {details['director']}")
+            st.write(f"🎭 **Actor:** {details['Actors']}")
+            st.write(f"⏱️ **Duración:** {details['Runtime']}")
+            st.write(f"🏅 **Premios:** {details['Awards']}") 
+            st.write(f"💰 **Box Office:** {details['BoxOffice']}")
+           
+        st.subheader("**Descripción:**")
+        st.write(details['descripcion'])
+    else:
+        st.sidebar.error("No se pudo obtener la información de la película.")
         # Star rating section
       #   st.write("**Rate this movie:**")
         
@@ -75,19 +78,19 @@ def view_poster(lista_poster,lista_originalTitle,lista_tconst,lista_averageRatin
                 st.image(image, use_column_width=True)
                 st.markdown(
                     f"""
-                    <div style="background-color:black;color:red;padding:0px;text-align:center;font-size:calc(12px + .1vw)">
-                        {lista_originalTitle[i][:20] + "..." if len(lista_originalTitle[i]) > 25 else lista_originalTitle[i]}
+                    <div style="background-color:#0e1117;color:red;padding:0px;text-align:center;font-size:calc(12px + .1vw)">
+                        {lista_originalTitle[i][:17] + "..." if len(lista_originalTitle[i]) > 22 else lista_originalTitle[i]}
                     </div>
                     """, unsafe_allow_html=True
                 )
                 
                 st.markdown(
                     f"""
-                    <div style="display:flex; justify-content: space-evenly">
-                        <div style="background-color:black;color:white;padding:0px;text-align:center;font-size:20px;font-weight:bold">
-                        {lista_averageRating[i]}
+                    <div style="display:flex; justify-content: center">
+                        <div style="background-color:#0e1117;color:white;padding:0px;text-align:center;font-size:20px;font-weight:bold">
+                        <span style="font-size:10px; padding-right:3px">rating</span>{lista_averageRating[i]}
                         </div>
-                        <div style="background-color:black;color:black;padding:0px;text-align:end;font-size:calc(10px + .1vw)">
+                        <div style="background-color:#0e1117;color:#0e1117;padding:0px;text-align:end;font-size:calc(10px + .1vw)">
                             {"⭐" * min(int(float(lista_averageRating[i])), 5)}<br>
                             {"⭐" * (int(float(lista_averageRating[i])) - 5) if int(float(lista_averageRating[i])) > 5 else "."}
                         </div>
@@ -95,23 +98,24 @@ def view_poster(lista_poster,lista_originalTitle,lista_tconst,lista_averageRatin
                     """, unsafe_allow_html=True
                 )
 
-                def open_imdb_video(url):
+                # def open_imdb_video(url):
                     # url = f"https://www.imdb.com/title/{tt}/"
-                    webbrowser.open_new_tab(url)
+                    # webbrowser.open_new_tab(url)
 
                 col1,col2=st.columns(2)
                 with col1:
-                  if st.button('Ver trailer', key=f'btn_trailer_{i}'):
+                  if st.button('Trailer', key=f'btn_trailer_{i}'):
                     #  if st.button("Cargar Video"):
                             video_url = f"https://www.imdb.com/title/{lista_tconst[i]}/"
                             # if video_url:
-                            st.markdown(f"[Abrir video]({video_url})")
+                            st.write(f"[Ver en imbd]({video_url})")
                             # open_imdb_video(video_url)
 
                             # video.open_and_click(lista_tconst[i])
                 with col2:
-                  if st.button('Más detalles', key=f'btn_details_{i}'):
+                  if st.button('Details', key=f'btn_details_{i}'):
                      st.session_state.show_details = lista_tconst[i]
+                    #  st.rerun()
             except IndexError:
                 st.error(f"Index {i} out of range for the title list.")
             except Exception as e:
@@ -148,7 +152,7 @@ def view_poster(lista_poster,lista_originalTitle,lista_tconst,lista_averageRatin
             )
             view_movie_details(st.session_state.show_details)
 
-def title_poster_genre(menu_id):
+def title_poster_genre(menu_id,text):
     st.markdown(f"""
     <div> <p style="
         background-color:none;
@@ -158,7 +162,7 @@ def title_poster_genre(menu_id):
         font-size:2rem;
         animation: pulse 1.5s infinite;
         ">
-        <b>Movie Posters {menu_id.upper()} Top 5</b>
+        <b>{text} {menu_id.upper()} Top 5</b>
         </p>
     </div>
     

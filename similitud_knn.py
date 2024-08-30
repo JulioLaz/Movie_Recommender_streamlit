@@ -10,7 +10,8 @@ def recomendacion_knn(user_input):
     df_poster=ddbb.load_df_poster()
 
     
-    df_agg = df_final.groupby(['userId', 'movieId'])['rating'].mean().reset_index()
+    # df_agg = df_final.groupby(['userId', 'movieId'])['rating'].mean().reset_index()
+    df_agg = df_ratings
     n_recommendations=5
     if isinstance(user_input, int):
         print('Existing user')
@@ -35,7 +36,7 @@ def recomendacion_knn(user_input):
         selected_genres = set().union(*selected_movie_genres)
       #   print(selected_genres)
         df_final_filtered = df_final[df_final['genre_set'].apply(lambda x: bool(selected_genres & x))]
-        df_final_filtered=df_final_filtered.copy()
+        # df_final_filtered=df_final_filtered.copy()
         df_final_filtered.drop_duplicates(subset=['movieId'], inplace=True)
 
         df_agg = df_final_filtered.groupby(['userId', 'movieId'])['rating'].mean().reset_index()
