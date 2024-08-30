@@ -56,8 +56,9 @@ margin-bottom: 22px !important}
 margin-top:10px !important}
 
 /* label of checkbox */
-#root > div:nth-child(1) > div.withScreencast > div > div > div > section > div.block-container.st-emotion-cache-13ln4jf.ea3mdgi5 > div > div > div > div:nth-child(11) > div:nth-child(2) > div > div > div > div > div:nth-child(1) > div > div > div > div > div > label{
-display: none !important} 
+#root > div:nth-child(1) > div.withScreencast > div > div > div > section.main.st-emotion-cache-uf99v8.ea3mdgi8 > div.block-container.st-emotion-cache-gh2jqd.ea3mdgi5 > div > div > div > div:nth-child(11) > div:nth-child(2) > div > div > div > div > div:nth-child(1) > div > div > div > div > div > label{
+display: none !important;
+} 
     </style>
    '''
    st.markdown(element_style, unsafe_allow_html=True)   
