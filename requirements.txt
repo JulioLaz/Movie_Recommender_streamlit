@@ -7,3 +7,4 @@ hydralit-components
 Pillow
 requests
 webdriver-manager
+streamlit-star-rating
