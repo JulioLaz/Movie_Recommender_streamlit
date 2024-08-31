@@ -6,13 +6,13 @@ from io import BytesIO
 
 path_img = 'https://i0.wp.com/image.tmdb.org/t/p/w300'
 
-pd.set_option('display.max_rows', None)
-pd.set_option('display.max_columns', None)
-pd.set_option('display.float_format', '{:.2f}'.format)
+# pd.set_option('display.max_rows', None)
+# pd.set_option('display.max_columns', None)
+# pd.set_option('display.float_format', '{:.2f}'.format)
 
 url = "http://files.grouplens.org/datasets/movielens/ml-latest-small.zip"
 response = requests.get(url)
-zip_file = BytesIO(response.content)  # Convert the content to a file-like object
+zip_file = BytesIO(response.content) 
 
 # Extract and load the files into DataFrames
 # with zipfile.ZipFile(zip_file, 'r') as zip_ref:
@@ -33,7 +33,7 @@ def load_df_movies():
     with zipfile.ZipFile(zip_file, 'r') as zip_ref:
         with zip_ref.open('ml-latest-small/movies.csv') as file:
             df_movies = pd.read_csv(file)
-            df_movies = pd.read_csv('data/ml-latest-small/movies.csv')
+            # df_movies = pd.read_csv('data/ml-latest-small/movies.csv')
             df_movies = df_movies.dropna()
             df_movies = df_movies.drop_duplicates(subset=['movieId'])
             # df_movies['genres'] = df_movies['genres'].str.replace('|', ' ')
@@ -48,7 +48,6 @@ def load_df_movies():
             df_movies['year'] = df_movies['title'].str.extract(r'\((\d{4})\)') # Extraer el año de la columna title y crear la nueva columna year
             df_movies['year'] = df_movies['year'].fillna(0).astype('uint16')
             df_movies['title'] = df_movies['title'].str.replace(r'\s*\(\d{4}\)$', '', regex=True) # Dejar sólo el title, eliminando el año:
-
     return df_movies
 
 @st.cache_data(ttl=300)
@@ -56,7 +55,6 @@ def load_df_ratings():
  with zipfile.ZipFile(zip_file, 'r') as zip_ref:
     with zip_ref.open('ml-latest-small/ratings.csv') as file:
         df_ratings = pd.read_csv(file)
-        # df_ratings = pd.read_csv('data/ml-latest-small/ratings.csv')
         df_ratings = df_ratings.dropna()
         df_ratings = df_ratings.drop_duplicates(subset=['movieId', 'userId'])
         df_ratings['movieId'] = df_ratings['movieId'].astype('uint32')
@@ -101,7 +99,6 @@ def df_merge_movies_ratings():
     df = df.explode('genres')
     return df
 
-
 @st.cache_data(ttl=300)
 def df_final():
     df_ratings=load_df_ratings()
@@ -121,4 +118,5 @@ def df_last_years():
 print("df_final():",df_final().head())
 
 
+print('df_last_years: ',df_last_years().columns)
 # print('df_final: ',df_final().columns)

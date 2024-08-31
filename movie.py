@@ -22,9 +22,16 @@ styles.styles_main()
 menu_data,over_theme,menu_id=menu.menu()
 
 if menu_id == "Home":
-    st.title("Welcome to Movie Recommendations")
-    st.write("Discover your next favorite movie!")
-
+    st.subheader("Welcome to Movie Recommendations")
+    # st.write("Discover your next favorite movie!")
+    st.markdown(
+        """
+        <div style="text-align: center;">
+            <img src="https://i.imgur.com/pkaSdxw.png" alt="Movie Poster" style="width:100vw; height:80vh;">
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 elif menu_id == "Genres":
     st.title("Movie Genres")
     st.write("Explore movies by genre")

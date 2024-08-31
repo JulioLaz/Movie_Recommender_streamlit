@@ -8,7 +8,8 @@ def recomendacion_knn(user_input):
     df_movies = ddbb.load_df_movies()
     df_ratings= ddbb.load_df_ratings()
     df_poster=ddbb.load_df_poster()
-
+    new_user=pd.read_csv('user_ratings.csv')
+    print(new_user)
     
     # df_agg = df_final.groupby(['userId', 'movieId'])['rating'].mean().reset_index()
     df_agg = df_ratings
@@ -88,7 +89,7 @@ def recomendacion_knn(user_input):
 
     return df_poster_knn_final
 
-# # print(recomendacion_knn(15))
+print(recomendacion_knn(15))
 
 # import pandas as pd
 # from sklearn.neighbors import NearestNeighbors

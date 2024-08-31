@@ -58,7 +58,18 @@ margin-top:10px !important}
 /* label of checkbox */
 #root > div:nth-child(1) > div.withScreencast > div > div > div > section.main.st-emotion-cache-uf99v8.ea3mdgi8 > div.block-container.st-emotion-cache-gh2jqd.ea3mdgi5 > div > div > div > div:nth-child(11) > div:nth-child(2) > div > div > div > div > div:nth-child(1) > div > div > div > div > div > label{
 display: none !important;
-} 
+}
+                     /*  star inthe sidebar */
+                     #root{
+                         display: flex !important;
+                        justify-content: center !important;
+                        background-color:red !important}
+                </style>
+
     </style>
    '''
    st.markdown(element_style, unsafe_allow_html=True)   
+# /* background img */
+# #root > div:nth-child(1) > div.withScreencast > div > div > div > section {
+#     background-image: url('https://i.imgur.com/SSPmAct.png') !important;
+# }

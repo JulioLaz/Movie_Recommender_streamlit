@@ -2,10 +2,15 @@ import requests
 from io import BytesIO
 import streamlit as st
 from PIL import Image
+import star_score_rating as ssr
+import ddbb
 # load_dotenv()  # Carga las variables del archivo .env
 # API_KEY = os.getenv("KEY")
 API_KEY = st.secrets["KEY"]
 
+df_links=ddbb.load_df_links()
+
+@st.cache_data(ttl=300)
 def obtener_info_pelicula(imdb_id):
     url = f"http://www.omdbapi.com/?i={imdb_id}&apikey={API_KEY}"
     
@@ -33,6 +38,8 @@ def load_image_from_url(url):
     return img
 
 def view_movie_details(imdb_id):
+    movieId=df_links[df_links['imdbId']==imdb_id]['movieId']
+    movieId=movieId.values[0]
     details = obtener_info_pelicula(imdb_id)
     if details:
         col1, col2 = st.columns([1, 1])
@@ -49,8 +56,10 @@ def view_movie_details(imdb_id):
            
         st.subheader("**Descripción:**")
         st.write(details['descripcion'])
+        # st.write(type(movieId))
     else:
         st.sidebar.error("No se pudo obtener la información de la película.")
+    ssr.rate_with_stars(movieId)
         # Star rating section
       #   st.write("**Rate this movie:**")
         
@@ -146,7 +155,7 @@ def view_poster(lista_poster,lista_originalTitle,lista_tconst,lista_averageRatin
                      padding-top:0 !important;}
                      #root > div:nth-child(1) > div.withScreencast > div > div > div > section.st-emotion-cache-1ec6rqw.eczjsme11 > div.st-emotion-cache-6qob1r.eczjsme3 > div.st-emotion-cache-16txtl3.eczjsme4 > div > div > div > div > div.st-emotion-cache-ocqkz7.e1f1d6gn5 > div:nth-child(2) > div > div > div > div:nth-child(7) > div > div > p{
                      margin:0 !important}
-                </style>
+
                 """,
                 unsafe_allow_html=True,
             )
