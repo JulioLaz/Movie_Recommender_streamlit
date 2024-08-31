@@ -1,6 +1,7 @@
 streamlit==1.33.0
 streamlit-navigation-bar==3.3.0
-streamlit-star-rating==0.3.0selenium
+streamlit-star-rating==0.3.0
+selenium
 scikit-learn
 pytz
 hydralit-components
