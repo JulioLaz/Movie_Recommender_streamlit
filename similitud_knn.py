@@ -2,22 +2,27 @@ import pandas as pd
 from sklearn.neighbors import NearestNeighbors
 import ddbb
 import numpy as np
+import streamlit as st
 
 def recomendacion_knn(user_input):
     df_final = ddbb.df_final()
     df_movies = ddbb.load_df_movies()
-    df_ratings= ddbb.load_df_ratings()
+    # df_ratings= ddbb.load_df_ratings()
+    df_ratings= ddbb.df_concat()
+
     df_poster=ddbb.load_df_poster()
-    new_user=pd.read_csv('user_ratings.csv')
-    print(new_user)
+    new_user=ddbb.new_user_rate()['userId'].unique()[0]
+    max_user=ddbb.load_df_ratings()['userId'].max()
+    # print(new_user)
     
     # df_agg = df_final.groupby(['userId', 'movieId'])['rating'].mean().reset_index()
-    df_agg = df_ratings
+    # df_agg = df_ratings
     n_recommendations=5
+    # if new_user <= user_input:
     if isinstance(user_input, int):
         print('Existing user')
-        print(df_agg.userId.max())
-        ratings_matrix = df_agg.pivot(index='userId', columns='movieId', values='rating')
+        print(df_ratings.userId.max())
+        ratings_matrix = df_ratings.pivot(index='userId', columns='movieId', values='rating')
         avg_ratings = ratings_matrix.mean(axis=1, skipna=True)
         ratings_matrix_normalized = ratings_matrix.sub(avg_ratings, axis=0).fillna(0)
         knn_model = NearestNeighbors(metric='cosine', algorithm='brute')
@@ -27,7 +32,7 @@ def recomendacion_knn(user_input):
     else:
         print('New user')
         new_user_ratings = pd.DataFrame({
-            'userId': [df_agg['userId'].max() + 1] * len(user_input),  # Match length to user_input
+            'userId': [df_ratings['userId'].max() + 1] * len(user_input),  # Match length to user_input
             # 'userId': [df_agg['userId'].max() + 1] * 2,
             'movieId': user_input.index,
             'rating': user_input.values})

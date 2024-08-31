@@ -144,34 +144,11 @@ elif menu_id == "Big fans":
 
 elif menu_id == "Just for you":
     st.title('Movie Recommendation System')
-    df_final=ddbb.df_final()
-
-    # def star_rating(selected_movie_title):
-    #     rating_options = ["★", "★", "★", "★", "★"]
-    #     rating = st.radio(f"Rate {selected_movie_title}", rating_options, index=2)
-    #     rating_value = rating_options.index(rating) + 1
-    #     return rating_value
-###########################
-    movies = df_final.groupby('userId')['rating'].count().reset_index().sort_values(by='rating', ascending=False)
-    movies_count_user=list(movies.userId)
-    usuario = st.selectbox('Search and select a user', movies_count_user)
-
-
-#######################
-    # movies = df_final[['movieId', 'title']].drop_duplicates()
-    # movie_titles = movies['title'].tolist()
-    # title='Matrix, The'
-    # default_index = movie_titles.index(title) if title in movie_titles else 0
-    
-    # selected_movie_title = st.selectbox('Search and select a movie to rate', movies['title'], index=default_index)
-    # selected_movie_id = int(movies[movies['title'] == selected_movie_title]['movieId'].values[0])
-
-    # rating = stars.star_rating(selected_movie_title)
-    # user_ratings = {selected_movie_id: rating}
-    # usuario = pd.Series(user_ratings)
-    # st.write(usuario)
-    # if selected_movie_title:
-    recommended_movies = sim_knn.recomendacion_knn(usuario)
+    # df_final=ddbb.df_final()
+    # movies = df_final.groupby('userId')['rating'].count().reset_index().sort_values(by='rating', ascending=False)
+    # movies_count_user=list(movies.userId)
+    # usuario = st.selectbox('Search and select a user', movies_count_user)
+    recommended_movies = sim_knn.recomendacion_knn(777)
 
     if 'poster_path_full' in recommended_movies.columns:
             lista_poster = list(recommended_movies['poster_path_full'].head(5))

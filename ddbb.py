@@ -115,8 +115,18 @@ def df_last_years():
     df.dropna(inplace=True)
     df=df.nlargest(20,'year')
     return df
-print("df_final():",df_final().head())
+# print("df_final():",df_final().head())
 
+@st.cache_data(ttl=300)
+def new_user_rate():
+    new_user=pd.read_csv('user_ratings.csv')
+    new_user['timestamp'] = pd.to_datetime(new_user['timestamp'])
+    new_user = new_user.loc[new_user.groupby(['movieId','userId'])['timestamp'].idxmax()]
+    new_user= new_user[['userId','movieId','rating','timestamp']]
+    return new_user
 
-print('df_last_years: ',df_last_years().columns)
-# print('df_final: ',df_final().columns)
+@st.cache_data(ttl=300)
+def df_concat():
+    df = pd.concat([load_df_ratings(), new_user_rate()])
+    return df
+
