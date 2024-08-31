@@ -11,8 +11,8 @@ def recomendacion_knn(user_input):
     df_ratings= ddbb.df_concat()
 
     df_poster=ddbb.load_df_poster()
-    new_user=ddbb.new_user_rate()['userId'].unique()[0]
-    max_user=ddbb.load_df_ratings()['userId'].max()
+    # new_user=ddbb.new_user_rate()['userId'].unique()[0]
+    # max_user=ddbb.load_df_ratings()['userId'].max()
     # print(new_user)
     
     # df_agg = df_final.groupby(['userId', 'movieId'])['rating'].mean().reset_index()
@@ -21,7 +21,7 @@ def recomendacion_knn(user_input):
     # if new_user <= user_input:
     if isinstance(user_input, int):
         print('Existing user')
-        print(df_ratings.userId.max())
+        # print(df_ratings.userId.max())
         ratings_matrix = df_ratings.pivot(index='userId', columns='movieId', values='rating')
         avg_ratings = ratings_matrix.mean(axis=1, skipna=True)
         ratings_matrix_normalized = ratings_matrix.sub(avg_ratings, axis=0).fillna(0)
@@ -94,7 +94,7 @@ def recomendacion_knn(user_input):
 
     return df_poster_knn_final
 
-print(recomendacion_knn(15))
+# print(recomendacion_knn(15))
 
 # import pandas as pd
 # from sklearn.neighbors import NearestNeighbors
