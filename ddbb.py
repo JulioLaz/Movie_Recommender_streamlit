@@ -103,7 +103,9 @@ def df_last_years():
 def new_user_rate():
     new_user=dbsql.extraer_datos()
     # new_user=pd.read_csv('user_ratings.csv')
-    new_user['timestamp'] = pd.to_datetime(new_user['timestamp'])
+    new_user['timestamp'] = pd.to_datetime(new_user['timestamp'], errors='coerce')
+
+    # new_user['timestamp'] = pd.to_datetime(new_user['timestamp'])
     new_user = new_user.loc[new_user.groupby(['movieId','userId'])['timestamp'].idxmax()]
     new_user= new_user[['userId','movieId','rating','timestamp']]
     return new_user
