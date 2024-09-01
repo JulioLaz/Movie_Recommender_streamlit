@@ -112,8 +112,11 @@ def new_user_rate():
 
 @st.cache_data(ttl=300)
 def df_concat():
-    df = pd.concat([load_df_ratings(), new_user_rate()])
+    df_new_ratings=new_user_rate()[['userId','movieId','rating']]
+    df_ratings=load_df_ratings()[['userId','movieId','rating']]
+    df = pd.concat([df_ratings, df_new_ratings])
+    df = df.groupby(['userId','movieId']).mean('rating').reset_index()
     return df
 
 # print(new_user_rate().columns)
-# print(df_concat().tail(5))
+print(df_concat().tail(5))
