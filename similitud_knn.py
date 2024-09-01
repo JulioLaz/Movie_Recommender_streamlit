@@ -8,7 +8,7 @@ def recomendacion_knn(user_input):
     df_movies = ddbb.load_df_movies()
     # df_ratings= ddbb.load_df_ratings()
     df_ratings= ddbb.df_concat()
-
+    df_ratings=df_ratings[['userId','movieId','rating']]
     df_poster=ddbb.load_df_poster()
     # new_user=ddbb.new_user_rate()['userId'].unique()[0]
     # max_user=ddbb.load_df_ratings()['userId'].max()
