@@ -107,7 +107,7 @@ def new_user_rate():
 
     # new_user['timestamp'] = pd.to_datetime(new_user['timestamp'])
     # new_user = new_user.loc[new_user.groupby(['movieId','userId'])['timestamp'].idxmax()]
-    new_user= new_user[['userId','movieId','rating','timestamp']]
+    # new_user= new_user[['userId','movieId','rating','timestamp']]
     return new_user
 
 @st.cache_data(ttl=300)
@@ -116,4 +116,4 @@ def df_concat():
     return df
 
 # print(new_user_rate().columns)
-print(df_concat().tail(5))
+# print(df_concat().tail(5))
