@@ -20,5 +20,6 @@ def extraer_datos():
         print(f"Error al conectar o extraer los datos: {str(e)}")
         return None
 
-# df_completo = extraer_datos()
-# print(df_completo)
+df_completo = extraer_datos()
+print(df_completo)
+# print(st.secrets)
