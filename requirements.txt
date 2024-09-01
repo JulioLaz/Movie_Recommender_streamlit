@@ -9,3 +9,4 @@ requests
 webdriver-manager
 st-star-rating
 sqlalchemy
+psycopg2-binary
