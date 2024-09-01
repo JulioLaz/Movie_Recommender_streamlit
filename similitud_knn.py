@@ -2,7 +2,6 @@ import pandas as pd
 from sklearn.neighbors import NearestNeighbors
 import ddbb
 import numpy as np
-import streamlit as st
 
 def recomendacion_knn(user_input):
     df_final = ddbb.df_final()

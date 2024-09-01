@@ -3,30 +3,12 @@ import zipfile
 import requests
 import streamlit as st
 from io import BytesIO
+import ddbb_postgreSQL as dbsql
 
 path_img = 'https://i0.wp.com/image.tmdb.org/t/p/w300'
-
-# pd.set_option('display.max_rows', None)
-# pd.set_option('display.max_columns', None)
-# pd.set_option('display.float_format', '{:.2f}'.format)
-
 url = "http://files.grouplens.org/datasets/movielens/ml-latest-small.zip"
 response = requests.get(url)
 zip_file = BytesIO(response.content) 
-
-# Extract and load the files into DataFrames
-# with zipfile.ZipFile(zip_file, 'r') as zip_ref:
-#     with zip_ref.open('ml-latest-small/ratings.csv') as file:
-#         df_ratings = pd.read_csv(file)
-    
-#     with zip_ref.open('ml-latest-small/movies.csv') as file:
-#         df_movies = pd.read_csv(file)
-    
-#     with zip_ref.open('ml-latest-small/tags.csv') as file:
-#         df_tags = pd.read_csv(file)
-    
-#     with zip_ref.open('ml-latest-small/links.csv') as file:
-#         df_links = pd.read_csv(file)
 
 @st.cache_data(ttl=300)
 def load_df_movies():
@@ -77,7 +59,7 @@ def load_df_links():
 # print("load_df_links():",load_df_links().head())
 
 @st.cache_data(ttl=300)
-def load_df_poster():#https://drive.google.com/file/d/1--35QAVDqzC9Z_K3eigB97aGy3FD_K3e/view?usp=sharing
+def load_df_poster():
    file_id = '1--35QAVDqzC9Z_K3eigB97aGy3FD_K3e'
    url = f'https://drive.google.com/uc?export=download&id={file_id}'
    df_poster = pd.read_csv(url)
@@ -119,7 +101,8 @@ def df_last_years():
 
 @st.cache_data(ttl=300)
 def new_user_rate():
-    new_user=pd.read_csv('user_ratings.csv')
+    new_user=dbsql.extraer_datos()
+    # new_user=pd.read_csv('user_ratings.csv')
     new_user['timestamp'] = pd.to_datetime(new_user['timestamp'])
     new_user = new_user.loc[new_user.groupby(['movieId','userId'])['timestamp'].idxmax()]
     new_user= new_user[['userId','movieId','rating','timestamp']]
@@ -130,3 +113,5 @@ def df_concat():
     df = pd.concat([load_df_ratings(), new_user_rate()])
     return df
 
+# print(new_user_rate().columns)
+print(df_concat().tail(5))

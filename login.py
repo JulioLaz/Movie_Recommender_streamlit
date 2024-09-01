@@ -146,3 +146,50 @@ else:
     st.write(f"Here are some great {menu_id} movies for you")
 
 placeholder = st.empty()
+
+##########################
+# ##agregar una tabla de nombres de usuarios relacionadas por userId utilizando la conexión de PostgreSQL.3
+
+# CREATE TABLE nombres_usuarios (
+#     id SERIAL PRIMARY KEY,
+#     userId INTEGER,
+#     nombre VARCHAR(255),
+#     FOREIGN KEY (userId) REFERENCES usuarios(userId)
+# )
+
+
+import psycopg2
+
+# Conectar a la base de datos
+conn = psycopg2.connect(
+    host="your_host",
+    database="your_database",
+    user="your_username",
+    password="your_password"
+)
+cursor = conn.cursor()
+
+def insertar_nombre_usuario(userId, nombre):
+    # Insertar el nombre de usuario en la tabla de nombres de usuarios
+    cursor.execute("INSERT INTO nombres_usuarios (userId, nombre) VALUES (%s, %s)", (userId, nombre))
+    conn.commit()
+    return cursor.lastrowid
+
+# Ejemplo de uso
+userId = 1
+nombre = "John Doe"
+insertar_nombre_usuario(userId, nombre)
+print(f"Nombre de usuario insertado con éxito. Id: {cursor.lastrowid}")
+
+def obtener_nombres_usuario(userId):
+    # Buscar los nombres de usuario relacionados con el userId
+    cursor.execute("SELECT nombre FROM nombres_usuarios WHERE userId = %s", (userId,))
+    resultados = cursor.fetchall()
+    return [resultado[0] for resultado in resultados]
+
+# Ejemplo de uso
+userId = 1
+nombres_usuario = obtener_nombres_usuario(userId)
+print(f"Nombres de usuario relacionados con el userId {userId}: {nombres_usuario}")
+
+

@@ -4,6 +4,15 @@ from streamlit_star_rating import st_star_rating
 import os
 import ddbb
 import datetime
+from sqlalchemy import create_engine
+
+DATABASE_URL = st.secrets["DATABASE_URL"]
+
+# load_dotenv()
+# DATABASE_URL = os.getenv('DATABASE_URL')
+engine = create_engine(DATABASE_URL)
+
+
 
 df = ddbb.df_final()
 df_poster = ddbb.load_df_poster()
@@ -72,4 +81,9 @@ def rate_with_stars(movie_ids):
          df_details = crear_dataframe_con_detalles([movie_ids])
          calificar(df_details, userId)
 
-         df_ratings.to_csv(df_file, index=False)
+
+         # insert_stmt = insert(Ratings).values(df_ratings.to_dict(orient='records'))
+         # engine.execute(insert_stmt)
+
+         df_ratings.to_sql('ratings', engine, if_exists='append', index=False)
+         # df_ratings.to_csv(df_file, index=False)

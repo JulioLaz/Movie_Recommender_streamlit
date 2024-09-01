@@ -8,3 +8,4 @@ Pillow
 requests
 webdriver-manager
 st-star-rating
+sqlalchemy
