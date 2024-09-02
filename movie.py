@@ -173,7 +173,7 @@ elif menu_id == "Just for you":
     df_final=ddbb.df_final()
     df_poster=ddbb.load_df_poster()
 
-    tdz.title_poster('', 'Movie recommendations just for you!')
+    tdz.title_poster_just('', 'Movie recommendations just for you!')
     # st.title('Movie recommendations just for you!')
     # df_final=ddbb.df_final()
     # movies = df_final.groupby('userId')['rating'].count().reset_index().sort_values(by='rating', ascending=False)
