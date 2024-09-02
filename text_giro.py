@@ -27,7 +27,7 @@ def giro(menu_id, text):
     }}
 
     .movie-title-text {{
-      font-size: 2.5rem;
+      font-size: 2.8rem;
       font-weight: bold;
       text-transform: uppercase;
       background: linear-gradient(to right, #8f6B29, #FDE08D, #DF9F28);
