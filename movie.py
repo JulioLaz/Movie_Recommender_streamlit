@@ -13,7 +13,7 @@ import star_rating as stars
 from collections import Counter
 import text_giro as tg
 import ver_poster_user_new as vpun
-
+import img_home 
 # st.set_page_config(page_title="movie recomendation", page_icon='🎦', layout="wide")
 # st.set_page_config(layout="wide")
 
@@ -41,17 +41,14 @@ menu_data,over_theme,menu_id=menu.menu()
 
 if menu_id == "Home":
     tdz.title_poster('', 'Welcome to Movie Recommendations!')
+    img_home.create_movie_welcome_page()
+    # st.markdown("""<div style="text-align: center;background-image">
+    #                     <img src="https://i.imgur.com/pkaSdxw.png" alt="Movie Poster" style="width:100vw; height:80vh;">
+    #                     <style>""",unsafe_allow_html=True)
 
-    # st.subheader("Welcome to Movie Recommendations")
-    # st.write("Discover your next favorite movie!")
-    st.markdown(
-        """
-        <div style="text-align: center;">
-            <img src="https://i.imgur.com/pkaSdxw.png" alt="Movie Poster" style="width:100vw; height:80vh;">
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+    # st.image("https://github.com/LeopoldoGitHub/Cinemio/blob/main/Leop/images/movies3.png?raw=true")
+    # st.write("<style>img { display: block; margin: 0 auto; }</style>", unsafe_allow_html=True)
+
 elif menu_id == "Genres":
     st.title("Movie Genres")
     st.write("Explore movies by genre")
