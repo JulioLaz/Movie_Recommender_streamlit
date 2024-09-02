@@ -119,4 +119,4 @@ def df_concat():
     return df
 
 # print(new_user_rate().columns)
-# print(df_concat().tail(5))
+print('df_concat:', df_concat().tail(5))

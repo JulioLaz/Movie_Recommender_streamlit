@@ -26,6 +26,9 @@ css_style = """
 .st-emotion-cache-1wmy9hl{
     gap: none!important;
 }
+.st-emotion-cache-16txtl3 {
+    padding: 1rem 1.2rem;
+}
 </style>
 """
 
@@ -140,7 +143,7 @@ elif menu_id == "Big fans":
         col1,col2=st.columns(2)
         with col1:
 
-            selected_user_option = st.selectbox('', user_options)
+            selected_user_option = st.selectbox('', user_options,label_visibility="collapsed")
             selected_user_id = int(selected_user_option.split()[1])    
 
             user_movies = df_final[df_final['userId'] == selected_user_id]

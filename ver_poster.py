@@ -42,11 +42,14 @@ def view_movie_details(imdb_id):
     movieId=movieId.values[0]
     details = obtener_info_pelicula(imdb_id)
     if details:
+        st.write(f"""<h2 style="color: gold; font-size: 2rem; height: 2.5rem; text-align: center; padding: 0px;margin-bottom:15px">
+               {details["titulo"]}
+               </h2>""", unsafe_allow_html=True)
+        # st.subheader(details["titulo"])
         col1, col2 = st.columns([1, 1])
         with col1:
             st.image(load_image_from_url(details["poster_url"]), use_column_width=True)
         with col2:
-            st.title(details["titulo"])
             st.write(f"📅 **Año:** {details['Released']}")
             st.write(f"🎬 **Director:** {details['director']}")
             st.write(f"🎭 **Actor:** {details['Actors']}")
@@ -60,23 +63,6 @@ def view_movie_details(imdb_id):
     else:
         st.sidebar.error("No se pudo obtener la información de la película.")
     ssr.rate_with_stars(movieId)
-        # Star rating section
-      #   st.write("**Rate this movie:**")
-        
-   #    #   rating = st.slider("Select your rating:", min_value=1, max_value=5, value=3)
-   #      rating=3
-   #      # Display stars based on selected rating
-   #      star_full = Image.open('img/star.png')
-   #      star_empty = Image.open('img/star-solid.png')
-   #      for i in range(1, 6):
-   #          if i <= rating:
-   #              st.image(star_full, width=30)
-   #          else:
-   #              st.image(star_empty, width=30)
-
-   #      st.write(f"Your rating: {rating} stars")            
-   #  else:
-   #      st.error("No se pudo obtener la información de la película.")
 
 def view_poster(lista_poster,lista_originalTitle,lista_tconst,lista_averageRating):
     cols = st.columns(5)
@@ -137,9 +123,13 @@ def view_poster(lista_poster,lista_originalTitle,lista_tconst,lista_averageRatin
                 """
                 <style>
                     [data-testid="stSidebar"][aria-expanded="true"] > div:first-child {
-                        width: 40vw;
-                     background-color:red;
+                        width: 40vw !important;
+                        background-color: red;
                     }
+                    @media (max-width: 768px) {
+                        [data-testid="stSidebar"][aria-expanded="true"] > div:first-child {
+                            width: 100% !important;
+                        }                    
                     /* wihdt sidebar */
                     #root > div:nth-child(1) > div.withScreencast > div > div > div > section.st-emotion-cache-1i4v8s7.eczjsme18{
                      max-width: none !important;

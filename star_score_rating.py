@@ -7,12 +7,7 @@ import datetime
 from sqlalchemy import create_engine
 
 DATABASE_URL = st.secrets["DATABASE_URL"]
-
-# load_dotenv()
-# DATABASE_URL = os.getenv('DATABASE_URL')
 engine = create_engine(DATABASE_URL)
-
-
 
 df = ddbb.df_final()
 df_poster = ddbb.load_df_poster()
@@ -31,13 +26,16 @@ def rate_with_stars(movie_ids):
       # userId = st.number_input("Enter your user ID", min_value=df.userId.max()+1, step=1)
       userId=777
 
-      st.write("""<h2 style="text-align: center;padding:0px">How many stars for this film, people?</h2>""", unsafe_allow_html=True)
+      st.write("""<h2 style="color: gold; font-size: 1.4rem; height: 2.5rem; text-align: center; padding: 0px;margin-top:10px">
+               How many stars for this film?
+               </h2>""", unsafe_allow_html=True)
       if userId in df["userId"].unique() or userId in df_ratings["userId"].unique():
          def calificar(df_details, userId):
             calificaciones = []
             for index, row in df_details.iterrows():
                   # st.image(row['poster_path_full'], width=150)
-                  rating = st_star_rating("", maxValue=5, defaultValue=0, key=f"rating_{row['movieId']}",customCSS = "div {background-color: red;display: flex;justify-content: center;height: 4.5rem;padding-top: 3px;width: 100%}, h3 {display: none}, #root > div > ul {display: flex;justify-content: center;}")
+                  rating = st_star_rating("", maxValue=5, defaultValue=0, key=f"rating_{row['movieId']}",
+                           customCSS = "div {background-color: red;border:none;display: flex;justify-content: center; align-items: center;height: 4.5rem;padding-top: 3px;width: 100%},h3 {display: none}, #root > div > ul {display: flex;justify-content: center;}")
                   if rating > 0:
                      # calificaciones.append({'userId': userId, 'movieId': row['movieId'], 'title': row['title'], 'rating': rating})
                                      calificaciones.append({
