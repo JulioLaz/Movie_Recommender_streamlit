@@ -100,14 +100,14 @@ def view_poster(lista_poster, lista_originalTitle, lista_tconst, lista_averageRa
                         """, unsafe_allow_html=True
                     )
 
-                    col1, col2 = st.columns(2)
-                    with col1:
-                        if st.button('Trailer', key=f'btn_trailer_{i}'):
-                            video_url = f"https://www.imdb.com/title/{lista_tconst[i]}/"
-                            st.write(f"[Ver en imbd]({video_url})")
-                    with col2:
-                        if st.button('Details', key=f'btn_details_{i}'):
-                            st.session_state.show_details = lista_tconst[i]
+                    # col1, col2 = st.columns(2)
+                    # with col1:
+                    #     if st.button('Trailer', key=f'btn_trailer_{i}'):
+                    #         video_url = f"https://www.imdb.com/title/{lista_tconst[i]}/"
+                    #         st.write(f"[Ver en imbd]({video_url})")
+                    # with col2:
+                    #     if st.button('Details', key=f'btn_details_{i}'):
+                    #         st.session_state.show_details = lista_tconst[i]
 
                 except IndexError:
                     st.error(f"Index {i} out of range for the title list.")

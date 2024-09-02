@@ -119,5 +119,6 @@ def df_concat():
     df = df.groupby(['userId','movieId']).mean('rating').reset_index()
     return df
 
+
+# print('df_final: ', df_poster_final.columns)
 # print(new_user_rate().columns)
-print('df_concat:', df_concat().tail(5))
