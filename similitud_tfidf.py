@@ -25,6 +25,8 @@ def recomendacion_tf_idf(movie_id):
    df_poster_tfidfvec = pd.merge(recommended_movies, df_average_ratings, on='movieId', how='left')
    df_poster_tfidfvec.drop(['genres','genre_set'], axis=1,inplace=True)
    df_poster_tfidfvec = pd.merge(df_poster_tfidfvec, df_poster, on='movieId', how='left')
+   df_poster_tfidfvec = df_poster_tfidfvec[df_poster_tfidfvec['movieId'] != movie_id]
+
    return df_poster_tfidfvec
 
 # print('recomendacion_tf_idf(movie_id): ',recomendacion_tf_idf(1))

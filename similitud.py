@@ -8,7 +8,7 @@ def similitud_jaccard(set1, set2):
     return intersection / union
 
 def recomendacion_jaccard(movie_id):
-    n_recommendations=5
+    n_recommendations=10
     df=ddbb.load_df_movies()
     df_ratings=ddbb.load_df_ratings()
     df_poster=ddbb.load_df_poster()
@@ -20,7 +20,7 @@ def recomendacion_jaccard(movie_id):
     df_average_ratings=df_ratings.groupby('movieId')['rating'].mean().reset_index()
     df_poster_jaccard = pd.merge(df, df_average_ratings, on='movieId', how='left')
     df_poster_jaccard = pd.merge(df_poster_jaccard, df_poster, on='movieId', how='left')
-
+    df_poster_jaccard = df_poster_jaccard[df_poster_jaccard['movieId'] != movie_id]
     return df_poster_jaccard
 
 # print('recomendacion_jaccard: ', recomendacion_jaccard(58559).columns)

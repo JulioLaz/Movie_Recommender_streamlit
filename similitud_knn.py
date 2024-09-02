@@ -9,7 +9,7 @@ def recomendacion_knn(user_input):
     df_ratings= ddbb.df_concat()
     df_poster=ddbb.load_df_poster()
 
-    n_recommendations=5
+    n_recommendations=10
     # if new_user <= user_input:
     if isinstance(user_input, int):
         print('Existing user')
@@ -72,7 +72,7 @@ def recomendacion_knn(user_input):
     indices = indices.flatten()[1:]
 
     similar_users = ratings_matrix_normalized.iloc[indices]
-    print('similar_users: ',similar_users.head(10))
+    # print('similar_users: ',similar_users.head(10))
     mean_ratings = similar_users.T.dot(distances) / np.sum(distances)
     df_mean_ratings = pd.DataFrame(mean_ratings, index=ratings_matrix_normalized.columns, columns=['mean_rating'])
     df_mean_ratings = df_mean_ratings.dropna()
@@ -80,12 +80,12 @@ def recomendacion_knn(user_input):
     # print('df_mean_ratings: ',df_mean_ratings.head(10))
     # if isinstance(user_input, int):
     movies_seen = df_ratings[df_ratings['userId']==user_input]['movieId']
-    print('movies_seen: ', movies_seen[:10])
+    # print('movies_seen: ', movies_seen[:10])
     # else:
         # movies_seen = df_agg_final[df_agg_final['userId'] == df_agg_final['userId'].max()]['movieId']
     df_mean_ratings = df_mean_ratings[~df_mean_ratings.index.isin(movies_seen)]
     df_mean_ratings = df_mean_ratings.sort_values('mean_rating', ascending=False)
-    print('df_mean_ratings: ', df_mean_ratings.head(10))
+    # print('df_mean_ratings: ', df_mean_ratings.head(10))
     recommended_movies = pd.merge(df_mean_ratings, df_final[['movieId', 'title', 'genres','year']], left_index=True, right_on='movieId')
     recommended_movies.drop_duplicates(subset=['movieId'], inplace=True)
     columnas=['movieId', 'title', 'genres','mean_rating','year']
