@@ -11,6 +11,8 @@ import pandas as pd
 import ver_poster
 import star_rating as stars
 from collections import Counter
+import text_giro as tg
+import ver_poster_user_new as vpun
 
 # st.set_page_config(page_title="movie recomendation", page_icon='🎦', layout="wide")
 # st.set_page_config(layout="wide")
@@ -27,7 +29,7 @@ css_style = """
     gap: none!important;
 }
 .st-emotion-cache-16txtl3 {
-    padding: 1rem 1.2rem;
+    padding: 1rem 1.3rem;
 }
 </style>
 """
@@ -137,7 +139,8 @@ elif menu_id == "Big fans":
     user_options = [f"Usuario {userId} - voted movies: {count}" for userId, count in user_rating_counts.items()]
     col1,col2=st.columns(2)
     with col1:
-        st.subheader('Top picks for our biggest fans: ')
+        tg.giro('','Top picks for our biggest fans')
+        # st.subheader('Top picks for our biggest fans: ')
 
     with col2:
         col1,col2=st.columns(2)
@@ -170,13 +173,16 @@ elif menu_id == "Big fans":
             ver_poster.view_poster(lista_poster,lista_originalTitle,lista_tconst,lista_averageRating)
 
 elif menu_id == "Just for you":
+    df_final=ddbb.df_final()
     tdz.title_poster('', 'Movie recommendations just for you!')
     # st.title('Movie recommendations just for you!')
     # df_final=ddbb.df_final()
     # movies = df_final.groupby('userId')['rating'].count().reset_index().sort_values(by='rating', ascending=False)
     # movies_count_user=list(movies.userId)
     # usuario = st.selectbox('Search and select a user', movies_count_user)
-    recommended_movies = sim_knn.recomendacion_knn(777)
+    recommended_movies,movies_seen = sim_knn.recomendacion_knn(777)
+    df_final=df_final.groupby(['movieId','poster_path_full','title','imdb_id']).mean('rating')
+    df_poster_final = df_final[df_final['movieId'].isin(movies_seen)]
 
     if 'poster_path_full' in recommended_movies.columns:
             lista_poster = list(recommended_movies['poster_path_full'].head(5))
@@ -186,6 +192,11 @@ elif menu_id == "Just for you":
             # vp.view_poster(lista_poster, lista_originalTitle, lista_tconst, lista_averageRating)
             ver_poster.view_poster(lista_poster,lista_originalTitle,lista_tconst,lista_averageRating)
 
+    lista_poster = list(df_poster_final['poster_path_full'].head(5))
+    lista_originalTitle = list(df_poster_final['title'].head(5))
+    lista_tconst = list(df_poster_final['imdb_id'].head(5))
+    lista_averageRating = list(round(df_poster_final['rating'], 2).head(5))
+    vpun.view_poster()
 
 elif menu_id == "Login":
     st.title("Login")

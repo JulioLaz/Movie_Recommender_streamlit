@@ -94,7 +94,7 @@ def recomendacion_knn(user_input):
     df_average_ratings=df_ratings.groupby('movieId')['rating'].mean().reset_index()
     df_poster_knn = pd.merge(recommended_movies, df_average_ratings, on='movieId', how='left')
     df_poster_knn_final = pd.merge(df_poster_knn, df_poster, on='movieId', how='left')
-
-    return df_poster_knn_final
+    df_poster_knn_final = df_poster_knn_final[~df_poster_knn_final['movieId'].isin(movies_seen)]
+    return df_poster_knn_final,movies_seen
 
 print(recomendacion_knn(777))
