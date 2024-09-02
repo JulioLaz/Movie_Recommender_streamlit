@@ -64,6 +64,10 @@ display: none !important;
       display: flex !important;
       justify-content: center !important;
       background-color:red !important};
+/* marginin the check-box movie */
+#root > div:nth-child(1) > div.withScreencast > div > div > div > section > div.block-container.st-emotion-cache-gh2jqd.ea3mdgi5 > div > div > div > div:nth-child(11) > div:nth-child(2) > div > div > div > div > div{
+margin-bottom: 10px !important}
+
 </style>
    '''
    st.markdown(element_style, unsafe_allow_html=True)   

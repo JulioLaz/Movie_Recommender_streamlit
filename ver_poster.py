@@ -87,7 +87,7 @@ def view_poster(lista_poster,lista_originalTitle,lista_tconst,lista_averageRatin
                 st.image(image, use_column_width=True)
                 st.markdown(
                     f"""
-                    <div style="background-color:#0e1117;color:red;padding:0px;text-align:center;font-size:calc(12px + .1vw)">
+                    <div style="background-color:#0e1117;color:red;padding:2px 0px;text-align:center;font-size:calc(12px + .1vw);height:2rem;box-sizing:unset">
                         {lista_originalTitle[i][:17] + "..." if len(lista_originalTitle[i]) > 22 else lista_originalTitle[i]}
                     </div>
                     """, unsafe_allow_html=True
@@ -95,7 +95,7 @@ def view_poster(lista_poster,lista_originalTitle,lista_tconst,lista_averageRatin
                 
                 st.markdown(
                     f"""
-                    <div style="display:flex; justify-content: center">
+                    <div style="display:flex; justify-content: center;height:1.9rem;margin-bottom:15px;margin-top:3px;">
                         <div style="background-color:#0e1117;color:white;padding:0px;text-align:center;font-size:20px;font-weight:bold">
                         <span style="font-size:10px; padding-right:3px">rating</span>{lista_averageRating[i]}
                         </div>
@@ -172,7 +172,7 @@ def title_poster_genre(menu_id,text):
         font-size:2rem;
         animation: pulse 1.5s infinite;
         ">
-        <b>{text} {menu_id.upper()} Top 5</b>
+        <b>{text} {menu_id.upper()}</b>
         </p>
     </div>
     

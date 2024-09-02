@@ -1,7 +1,7 @@
 import streamlit as st
 import populares as pop
 import ddbb
-import view_posters as vp
+import text_desplazado as tdz
 import menu
 import styles
 import similitud as sim
@@ -18,11 +18,26 @@ from collections import Counter
 df_movies = ddbb.df_merge_movies_ratings()
 
 styles.styles_main()
+css_style = """
+<style>
+* {
+    gap:0px 4px!important;
+}
+.st-emotion-cache-1wmy9hl{
+    gap: none!important;
+}
+</style>
+"""
+
+# Apply the CSS style
+st.markdown(css_style, unsafe_allow_html=True)
 
 menu_data,over_theme,menu_id=menu.menu()
 
 if menu_id == "Home":
-    st.subheader("Welcome to Movie Recommendations")
+    tdz.title_poster('', 'Welcome to Movie Recommendations!')
+
+    # st.subheader("Welcome to Movie Recommendations")
     # st.write("Discover your next favorite movie!")
     st.markdown(
         """
@@ -39,7 +54,7 @@ elif menu_id == "Genres":
 
 elif menu_id == "Most Populars":
     # st.title("Most popular movies among our users:")
-    ver_poster.title_poster_genre('','Most popular movies among our users -')
+    ver_poster.title_poster_genre('','Most popular movies among our users!')
     df=pop.recomendacion_populares()
     lista_poster = list(df['poster_path_full'].head(5))
     lista_originalTitle = list(df['title'].head(5))
@@ -51,12 +66,16 @@ elif menu_id == "Most Populars":
 elif menu_id == "Top Rated":
     df_final=ddbb.df_final()
     df_final = df_final.drop_duplicates(subset='title', keep='first')
-    st.title("Community")
+    col1, col2 = st.columns(2)
+    with col1:
+        ver_poster.title_poster_genre('','People who watched this movie also loved these!')
 
-    movie_titles = df_final['title'].tolist()
-    title='Titanic'
-    default_index = movie_titles.index(title) if title in movie_titles else 0
-    selected_title = st.selectbox("Select a movie you like: Connect with other movie enthusiasts and get personalized recommendations", movie_titles, index=default_index)
+        # st.subheader("People who watched this movie also loved these!")
+    with col2:
+        movie_titles = df_final['title'].tolist()
+        title='Titanic'
+        default_index = movie_titles.index(title) if title in movie_titles else 0
+        selected_title = st.selectbox("Select a movie you like: Connect with other movie enthusiasts and get personalized recommendations", movie_titles, index=default_index)
 
     if selected_title:
         movie_id = df_final[df_final['title'] == selected_title]['movieId'].values[0]
@@ -73,12 +92,17 @@ elif menu_id == "Top Rated":
 elif menu_id == "Community": #
     df_final=ddbb.df_final()
     df_final = df_final.drop_duplicates(subset='title', keep='first')
-    st.title("Community")
+    col1, col2 = st.columns(2)
+    with col1:
+        ver_poster.title_poster_genre('','Fans of this movie also enjoyed these!')
 
-    movie_titles = df_final['title'].tolist()
-    title='Matrix, The'
-    default_index = movie_titles.index(title) if title in movie_titles else 0
-    selected_title = st.selectbox("Select a movie you like: Connect with other movie enthusiasts and get personalized recommendations", movie_titles, index=default_index)
+        # st.subheader("Fans of this movie also enjoyed these!")
+
+    with col2:
+        movie_titles = df_final['title'].tolist()
+        title='Matrix, The'
+        default_index = movie_titles.index(title) if title in movie_titles else 0
+        selected_title = st.selectbox("Select a movie you like: Connect with other movie enthusiasts and get personalized recommendations", movie_titles, index=default_index)
 
     if selected_title:
         movie_id = df_final[df_final['title'] == selected_title]['movieId'].values[0]
@@ -110,7 +134,7 @@ elif menu_id == "Big fans":
     user_options = [f"Usuario {userId} - voted movies: {count}" for userId, count in user_rating_counts.items()]
     col1,col2=st.columns(2)
     with col1:
-        st.title('Top picks for our biggest fans: ')
+        st.subheader('Top picks for our biggest fans: ')
 
     with col2:
         col1,col2=st.columns(2)
@@ -143,7 +167,8 @@ elif menu_id == "Big fans":
             ver_poster.view_poster(lista_poster,lista_originalTitle,lista_tconst,lista_averageRating)
 
 elif menu_id == "Just for you":
-    st.title('Movie Recommendation System')
+    tdz.title_poster('', 'Movie recommendations just for you!')
+    # st.title('Movie recommendations just for you!')
     # df_final=ddbb.df_final()
     # movies = df_final.groupby('userId')['rating'].count().reset_index().sort_values(by='rating', ascending=False)
     # movies_count_user=list(movies.userId)
