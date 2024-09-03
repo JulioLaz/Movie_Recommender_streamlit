@@ -8,6 +8,8 @@ import ddbb
 # API_KEY = os.getenv("KEY")
 API_KEY = st.secrets["KEY"]
 
+num_movies=8
+
 df_links=ddbb.load_df_links()
 
 @st.cache_data(ttl=300)
@@ -65,8 +67,8 @@ def view_movie_details(imdb_id):
     ssr.rate_with_stars(movieId)
 
 def view_poster(lista_poster,lista_originalTitle,lista_tconst,lista_averageRating):
-    cols = st.columns(5)
-    for i in range(5):
+    cols = st.columns(num_movies)
+    for i in range(num_movies):
         with cols[i]:
             try:
                 image = load_image_from_url(f"https://image.tmdb.org/t/p/w500{lista_poster[i]}")

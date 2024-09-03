@@ -97,4 +97,43 @@ def recomendacion_knn(user_input):
     df_poster_knn_final = df_poster_knn_final[~df_poster_knn_final['movieId'].isin(movies_seen)]
     return df_poster_knn_final,movies_seen
 
-print(recomendacion_knn(777))
+# print(recomendacion_knn(777))
+
+df_final = ddbb.df_final_original()
+df_movies = ddbb.load_df_movies()
+df_ratings= ddbb.load_df_ratings()
+# df_ratings= ddbb.df_concat()
+df_poster=ddbb.load_df_poster()
+
+df_final = df_final.drop_duplicates(subset=['userId', 'title'])
+ratings_matrix = df_final.pivot(index='userId', columns='title', values='rating')
+avg_ratings = ratings_matrix.mean(axis=1)
+ratings_matrix_normalized = ratings_matrix.sub(avg_ratings, axis=0).fillna(0)
+knn_model = NearestNeighbors(metric='cosine', algorithm='brute')
+knn_model.fit(ratings_matrix_normalized)
+
+def recomendacion_knn_old_user(user_input):
+    n_recommendations=10
+    if isinstance(user_input, int):
+        idx = ratings_matrix_normalized.index.get_loc(user_input)
+        distances, indices = knn_model.kneighbors(ratings_matrix_normalized.iloc[idx].values.reshape(1, -1), n_neighbors=n_recommendations + 1)
+    else:
+        user_ratings = pd.Series(user_input).fillna(0).sub(avg_ratings.mean()).values.reshape(1, -1)
+        distances, indices = knn_model.kneighbors(user_ratings, n_neighbors=n_recommendations + 1)
+    distances, indices = distances.flatten()[1:], indices.flatten()[1:]
+    similar_users_ratings = ratings_matrix_normalized.iloc[indices, :]
+    weighted_ratings = similar_users_ratings.T.dot(1 - distances) / (1 - distances).sum()
+    recommendations_df = pd.DataFrame(weighted_ratings, index=ratings_matrix.columns, columns=['weighted_score'])
+    if isinstance(user_input, int):
+        watched_movies = ratings_matrix.loc[user_input].dropna().index
+        recommendations_df = recommendations_df[~recommendations_df.index.isin(watched_movies)]
+    recommendations_df = recommendations_df.sort_values(by='weighted_score', ascending=False).head(n_recommendations)
+    recommendations_df = recommendations_df.merge(df_movies[['title', 'genres','movieId']], left_index=True, right_on='title', how='left')
+    df_average_ratings=df_ratings.groupby('movieId')['rating'].mean().reset_index()
+    df_poster_knn = pd.merge(recommendations_df, df_average_ratings, on='movieId', how='left')
+    df_poster_knn_final = pd.merge(df_poster_knn, df_poster, on='movieId', how='left')
+    movies_seen = df_ratings[df_ratings['userId']==user_input]['movieId']
+    df_poster_knn_final = df_poster_knn_final[~df_poster_knn_final['movieId'].isin(movies_seen)]
+    return df_poster_knn_final
+
+# recomendacion_knn_old_user(50)

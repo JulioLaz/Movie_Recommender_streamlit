@@ -20,6 +20,8 @@ import view_posters
 
 df_movies = ddbb.df_merge_movies_ratings()
 
+mun_movies= 8
+
 styles.styles_main()
 css_style = """
 <style>
@@ -52,10 +54,10 @@ elif menu_id == "Most Populars":
     # st.title("Most popular movies among our users:")
     ver_poster.title_poster_genre('','Most popular movies among our users!')
     df=pop.recomendacion_populares()
-    lista_poster = list(df['poster_path_full'].head(5))
-    lista_originalTitle = list(df['title'].head(5))
-    lista_tconst = list(df['imdb_id'].head(5))
-    lista_averageRating = list(round(df['mean_rating'],1).head(5))
+    lista_poster = list(df['poster_path_full'].head(mun_movies))
+    lista_originalTitle = list(df['title'].head(mun_movies))
+    lista_tconst = list(df['imdb_id'].head(mun_movies))
+    lista_averageRating = list(round(df['mean_rating'],1).head(mun_movies))
     ver_poster.view_poster(lista_poster,lista_originalTitle,lista_tconst,lista_averageRating)
     # vp.view_poster(lista_poster,lista_originalTitle,lista_tconst,lista_averageRating)
 
@@ -78,10 +80,10 @@ elif menu_id == "Top Rated":
         recommended_movies = sim_tfidf.recomendacion_tf_idf(movie_id)
 
         if 'poster_path_full' in recommended_movies.columns:
-            lista_poster = list(recommended_movies['poster_path_full'].head(5))
-            lista_originalTitle = list(recommended_movies['title'].head(5))
-            lista_tconst = list(recommended_movies['imdb_id'].head(5))
-            lista_averageRating = list(round(recommended_movies['rating'], 2).head(5))
+            lista_poster = list(recommended_movies['poster_path_full'].head(mun_movies))
+            lista_originalTitle = list(recommended_movies['title'].head(mun_movies))
+            lista_tconst = list(recommended_movies['imdb_id'].head(mun_movies))
+            lista_averageRating = list(round(recommended_movies['rating'], 2).head(mun_movies))
             ver_poster.view_poster(lista_poster,lista_originalTitle,lista_tconst,lista_averageRating)
             # vp.view_poster(lista_poster, lista_originalTitle, lista_tconst, lista_averageRating)
 
@@ -102,16 +104,16 @@ elif menu_id == "Community": #
         recommended_movies = sim.recomendacion_jaccard(movie_id)
 
         if 'poster_path_full' in recommended_movies.columns:
-            lista_poster = list(recommended_movies['poster_path_full'].head(5))
-            lista_originalTitle = list(recommended_movies['title'].head(5))
-            lista_tconst = list(recommended_movies['imdb_id'].head(5))
-            lista_averageRating = list(round(recommended_movies['rating'], 2).head(5))
+            lista_poster = list(recommended_movies['poster_path_full'].head(mun_movies))
+            lista_originalTitle = list(recommended_movies['title'].head(mun_movies))
+            lista_tconst = list(recommended_movies['imdb_id'].head(mun_movies))
+            lista_averageRating = list(round(recommended_movies['rating'], 2).head(mun_movies))
             # vp.view_poster(lista_poster, lista_originalTitle, lista_tconst, lista_averageRating)
             ver_poster.view_poster(lista_poster,lista_originalTitle,lista_tconst,lista_averageRating)
 
 elif menu_id == "Big fans":
     # st.title('Top picks for our biggest fans: ')
-    df_final=ddbb.df_final()
+    df_final=ddbb.df_final_original()
     # movies = df_final.groupby('userId')['rating'].count().reset_index().sort_values(by='rating', ascending=False)
     # movies_count_user=list(movies.userId)
     # usuario = st.selectbox('Search and select a user', movies_count_user)
@@ -146,12 +148,12 @@ elif menu_id == "Big fans":
         with col2:
             with st.expander("View Top 10 Genres chosen by him user"):
                 st.write(df_genres.to_html(index=False), unsafe_allow_html=True)
-    recommended_movies, movies_seen = sim_knn.recomendacion_knn(selected_user_id)
+    recommended_movies = sim_knn.recomendacion_knn_old_user(selected_user_id)#recomendacion_knn_old_user
     if 'poster_path_full' in recommended_movies.columns:
-            lista_poster = list(recommended_movies['poster_path_full'].head(5))
-            lista_originalTitle = list(recommended_movies['title'].head(5))
-            lista_tconst = list(recommended_movies['imdb_id'].head(5))
-            lista_averageRating = list(round(recommended_movies['rating'], 2).head(5))
+            lista_poster = list(recommended_movies['poster_path_full'].head(mun_movies))
+            lista_originalTitle = list(recommended_movies['title'].head(mun_movies))
+            lista_tconst = list(recommended_movies['imdb_id'].head(mun_movies))
+            lista_averageRating = list(round(recommended_movies['rating'], 2).head(mun_movies))
             # vp.view_poster(lista_poster, lista_originalTitle, lista_tconst, lista_averageRating)
             ver_poster.view_poster(lista_poster,lista_originalTitle,lista_tconst,lista_averageRating)
 
@@ -167,10 +169,10 @@ elif menu_id == "Just for you":
     df_poster_final = pd.merge(df_final, df_poster, on='movieId', how='left')
 
     if 'poster_path_full' in recommended_movies.columns:
-            lista_poster = list(recommended_movies['poster_path_full'].head(5))
-            lista_originalTitle = list(recommended_movies['title'].head(5))
-            lista_tconst = list(recommended_movies['imdb_id'].head(5))
-            lista_averageRating = list(round(recommended_movies['rating'], 2).head(5))
+            lista_poster = list(recommended_movies['poster_path_full'].head(mun_movies))
+            lista_originalTitle = list(recommended_movies['title'].head(mun_movies))
+            lista_tconst = list(recommended_movies['imdb_id'].head(mun_movies))
+            lista_averageRating = list(round(recommended_movies['rating'], 2).head(mun_movies))
             # vp.view_poster(lista_poster, lista_originalTitle, lista_tconst, lista_averageRating)
             ver_poster.view_poster(lista_poster,lista_originalTitle,lista_tconst,lista_averageRating)
 

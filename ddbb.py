@@ -82,6 +82,15 @@ def df_merge_movies_ratings():
     return df
 
 @st.cache_data(ttl=300)
+def df_final_original():
+    # df_ratings=load_df_ratings()
+    df_ratings=load_df_ratings()
+    df_movies = load_df_movies()
+    df_final = pd.merge(df_ratings, df_movies, on='movieId')
+    df_final.dropna(inplace=True)
+    return df_final
+
+@st.cache_data(ttl=300)
 def df_final():
     # df_ratings=load_df_ratings()
     df_ratings=df_concat()

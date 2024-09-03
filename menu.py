@@ -35,8 +35,9 @@ def menu():
       {'icon': "fas fa-users", 'label': "Community"},
       {'icon': "fas fa-crown", 'label': "Big fans"},
       {'icon': "fas fa-video", 'label': "Just for you"},
-      {'icon': "🔎", 'label': "Search movies"},
+      {'icon': "fa fa-search", 'label': "Search movies"},
    ]
+      # {'icon': "🔎", 'label': "Search movies"},
 
    over_theme = {
       'txc_inactive': '#D3D3D3',     
