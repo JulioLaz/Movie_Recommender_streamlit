@@ -35,7 +35,7 @@ def menu():
       {'icon': "fas fa-users", 'label': "Community"},
       {'icon': "fas fa-crown", 'label': "Big fans"},
       {'icon': "fas fa-video", 'label': "Just for you"},
-      {'icon': "fas fa-glass", 'label': "Search movies"},
+      {'icon': "🔎", 'label': "Search movies"},
    ]
 
    over_theme = {
