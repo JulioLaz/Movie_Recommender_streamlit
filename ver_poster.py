@@ -156,7 +156,7 @@ def title_poster_genre(menu_id,text):
     st.markdown(f"""
     <div> <p style="
         background-color:none;
-        color:gold;
+        color:#DF9F28;
         padding:0px;
         text-align:center;
         font-size:2rem;

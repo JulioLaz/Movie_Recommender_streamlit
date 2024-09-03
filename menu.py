@@ -13,7 +13,7 @@ def menu():
          {'icon': "🕵️", 'label': "Mystery"},
          {'icon': "😱", 'label': "Thriller"},
          {'icon': "😂", 'label': "Comedy"},
-         {'icon': "👪", 'label': "Family"},
+         # {'icon': "👪", 'label': "Family"},
          {'icon': "🦹", 'label': "Crime"},
          {'icon': "⚔️", 'label': "War"},
          {'icon': "🚀", 'label': "Sci-Fi"},
@@ -25,9 +25,9 @@ def menu():
          {'icon': "🧙", 'label': "Fantasy"},
          {'icon': "🎨", 'label': "Animation"},
          {'icon': "🎥", 'label': "Documentary"},
-         {'icon': "🔞", 'label': "Adult"},
-         {'icon': "📰", 'label': "News"},
-         {'icon': "📺", 'label': "Reality-TV"}
+         # {'icon': "🔞", 'label': "Adult"},
+         # {'icon': "📰", 'label': "News"},
+         # {'icon': "📺", 'label': "Reality-TV"}
       ]},
 
       {'icon': "fas fa-star", 'label': "Most Populars"},
@@ -35,7 +35,7 @@ def menu():
       {'icon': "fas fa-users", 'label': "Community"},
       {'icon': "fas fa-crown", 'label': "Big fans"},
       {'icon': "fas fa-video", 'label': "Just for you"},
-      {'icon': "fas fa-calendar-alt", 'label': "New Releases"},
+      {'icon': "fas fa-glass", 'label': "Search movies"},
    ]
 
    over_theme = {

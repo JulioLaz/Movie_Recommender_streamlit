@@ -14,6 +14,7 @@ from collections import Counter
 import text_giro as tg
 import ver_poster_user_new as vpun
 import img_home 
+import view_posters
 # st.set_page_config(page_title="movie recomendation", page_icon='🎦', layout="wide")
 # st.set_page_config(layout="wide")
 
@@ -42,17 +43,10 @@ menu_data,over_theme,menu_id=menu.menu()
 if menu_id == "Home":
     tdz.title_poster('', 'Welcome to Movie Recommendations!')
     img_home.create_movie_welcome_page()
-    # st.markdown("""<div style="text-align: center;background-image">
-    #                     <img src="https://i.imgur.com/pkaSdxw.png" alt="Movie Poster" style="width:100vw; height:80vh;">
-    #                     <style>""",unsafe_allow_html=True)
-
-    # st.image("https://github.com/LeopoldoGitHub/Cinemio/blob/main/Leop/images/movies3.png?raw=true")
-    # st.write("<style>img { display: block; margin: 0 auto; }</style>", unsafe_allow_html=True)
 
 elif menu_id == "Genres":
     st.title("Movie Genres")
     st.write("Explore movies by genre")
-
 
 elif menu_id == "Most Populars":
     # st.title("Most popular movies among our users:")
@@ -97,9 +91,6 @@ elif menu_id == "Community": #
     col1, col2 = st.columns(2)
     with col1:
         ver_poster.title_poster_genre('','Fans of this movie also enjoyed these!')
-
-        # st.subheader("Fans of this movie also enjoyed these!")
-
     with col2:
         movie_titles = df_final['title'].tolist()
         title='Matrix, The'
@@ -117,11 +108,6 @@ elif menu_id == "Community": #
             lista_averageRating = list(round(recommended_movies['rating'], 2).head(5))
             # vp.view_poster(lista_poster, lista_originalTitle, lista_tconst, lista_averageRating)
             ver_poster.view_poster(lista_poster,lista_originalTitle,lista_tconst,lista_averageRating)
-
-
-elif menu_id == "New Releases":
-    st.title("New Releases")
-    st.write("The latest movies to hit the screens")
 
 elif menu_id == "Big fans":
     # st.title('Top picks for our biggest fans: ')
@@ -174,11 +160,7 @@ elif menu_id == "Just for you":
     df_poster=ddbb.load_df_poster()
 
     tdz.title_poster_just('', 'Movie recommendations just for you!')
-    # st.title('Movie recommendations just for you!')
-    # df_final=ddbb.df_final()
-    # movies = df_final.groupby('userId')['rating'].count().reset_index().sort_values(by='rating', ascending=False)
-    # movies_count_user=list(movies.userId)
-    # usuario = st.selectbox('Search and select a user', movies_count_user)
+
     recommended_movies,movies_seen = sim_knn.recomendacion_knn(777)
     df_final = df_final[df_final['movieId'].isin(movies_seen)]
     df_final = df_final.groupby(['movieId','title']).mean('rating').reset_index()
@@ -201,6 +183,37 @@ elif menu_id == "Just for you":
     lista_averageRating = list(round(df_poster_final['rating'], 2))
 
     vpun.view_poster(lista_poster,lista_originalTitle,lista_tconst,lista_averageRating)
+
+
+elif menu_id == "Search movies":
+    df_final=ddbb.df_final()
+    df_poster=ddbb.load_df_poster()
+
+    col1, col2 = st.columns(2)
+    with col1:
+        ver_poster.title_poster_genre('','Find the movie you like best!')
+    with col2:
+        df_final=df_final.drop_duplicates('movieId')
+        movie_titles = df_final['title'].tolist()
+        title='Matrix, The'
+        default_index = movie_titles.index(title) if title in movie_titles else 0
+        selected_title = st.selectbox("", movie_titles, index=default_index, label_visibility="collapsed")
+
+
+    # tdz.title_poster_just('', 'Movie recommendations just for you!')
+    df_final = df_final.groupby(['movieId','title']).mean('rating').reset_index()
+    df_poster_final = pd.merge(df_final, df_poster, on='movieId', how='left')
+    df_poster_final = df_poster_final[df_poster_final['title'] == selected_title]
+    # st.write(f"""<h1 style="color: gold; font-size: 2rem; height: 3rem; text-align: center; padding: 0px;margin:20px">
+    #            Here are the movies you've already rated!
+    #            </h1>""", unsafe_allow_html=True)
+    # st.write(df_poster_final)
+    lista_poster = list(df_poster_final['poster_path_full'])
+    lista_originalTitle = list(df_poster_final['title'])
+    lista_tconst = list(df_poster_final['imdb_id'])
+    lista_averageRating = list(round(df_poster_final['rating'], 2))
+    view_posters.view_poster(lista_poster,lista_originalTitle,lista_tconst,lista_averageRating)
+
 
 elif menu_id == "Login":
     st.title("Login")
