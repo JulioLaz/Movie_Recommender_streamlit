@@ -14,6 +14,15 @@ df_poster = ddbb.load_df_poster()
 df = df.merge(df_poster, on='movieId', how='left')
 df_file = "user_ratings.csv"
 
+
+def guardar_datos(df_ratings):
+    DATABASE_URL = st.secrets["DATABASE_URL"]
+    engine = create_engine(DATABASE_URL)
+    df_ratings.to_sql('ratings', engine, if_exists='append', index=False)
+    st.cache_data.clear()  # Clear the cache after saving data
+    st.experimental_rerun()  # Rerun the app to reflect the updates
+
+
 def rate_with_stars(movie_ids,color):
       global df_ratings  # Declare df_ratings as global
 
@@ -87,5 +96,7 @@ def rate_with_stars(movie_ids,color):
          # insert_stmt = insert(Ratings).values(df_ratings.to_dict(orient='records'))
          # engine.execute(insert_stmt)
 
-         df_ratings.to_sql('ratings', engine, if_exists='append', index=False)
+         # df_ratings.to_sql('ratings', engine, if_exists='append', index=False)
+         guardar_datos(df_ratings)
+
          # df_ratings.to_csv(df_file, index=False)
