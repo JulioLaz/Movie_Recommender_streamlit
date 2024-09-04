@@ -120,7 +120,7 @@ def new_user_rate():
     # new_user= new_user[['userId','movieId','rating','timestamp']]
     return new_user
 
-@st.cache_data(ttl=300)
+# @st.cache_data(ttl=300)
 def df_concat():
     df_new_ratings=new_user_rate()[['userId','movieId','rating']]
     df_ratings=load_df_ratings()[['userId','movieId','rating']]
