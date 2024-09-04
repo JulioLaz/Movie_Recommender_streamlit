@@ -10,6 +10,8 @@ def extraer_datos():
         conn = engine.raw_connection()
         cur = conn.cursor()
         query_all = "SELECT * FROM ratings"  # Asegúrate de que el nombre de la tabla sea correcto
+        # query_all = "SELECT * FROM new_user_movie"  # Asegúrate de que el nombre de la tabla sea correcto
+        # query_all = "SELECT * FROM ratings"  # Asegúrate de que el nombre de la tabla sea correcto
         cur.execute(query_all)
         rows = cur.fetchall()
         df_all = pd.DataFrame(rows, columns=['userId', 'movieId', 'title', 'rating', 'timestamp'])  # Especifica los nombres de las columnas
@@ -20,6 +22,5 @@ def extraer_datos():
         print(f"Error al conectar o extraer los datos: {str(e)}")
         return None
 
-# df_completo = extraer_datos()
-# print(df_completo)
-# print(st.secrets)
+df_completo = extraer_datos()
+print(df_completo)

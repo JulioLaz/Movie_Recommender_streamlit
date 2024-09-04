@@ -136,4 +136,4 @@ def recomendacion_knn_old_user(user_input):
     df_poster_knn_final = df_poster_knn_final[~df_poster_knn_final['movieId'].isin(movies_seen)]
     return df_poster_knn_final
 
-print('recomendacion_knn_old_user(50):', recomendacion_knn_old_user(50).columns)
+# print('recomendacion_knn_old_user(50):', recomendacion_knn_old_user(50).columns)
