@@ -14,7 +14,7 @@ df_poster = ddbb.load_df_poster()
 df = df.merge(df_poster, on='movieId', how='left')
 df_file = "user_ratings.csv"
 
-def rate_with_stars(movie_ids):
+def rate_with_stars(movie_ids,color):
       global df_ratings  # Declare df_ratings as global
 
       if os.path.exists(df_file):
@@ -33,9 +33,13 @@ def rate_with_stars(movie_ids):
          def calificar(df_details, userId):
             calificaciones = []
             for index, row in df_details.iterrows():
-                  # st.image(row['poster_path_full'], width=150)
+               if color == 'R':
                   rating = st_star_rating("", maxValue=5, defaultValue=0, key=f"rating_{row['movieId']}",
                            customCSS = "div {background-color: red;border:none;display: flex;justify-content: center; align-items: center;height: 4.5rem;padding-top: 3px;width: 100%},h3 {display: none}, #root > div > ul {display: flex;justify-content: center;}")
+               else:
+                  rating = st_star_rating("", maxValue=5, defaultValue=0, key=f"rating_{row['movieId']}_{userId}",
+                  # rating = st_star_rating("", maxValue=5, defaultValue=0, key=f"rating_{row['movieId']}",
+                           customCSS = "div {background-color: rgb(14, 17, 23);border:none;display: flex;justify-content: center; align-items: center;height: 4.5rem;padding-top: 3px;width: 100%},h3 {display: none}, #root > div > ul {display: flex;justify-content: center;}")
                   if rating > 0:
                      # calificaciones.append({'userId': userId, 'movieId': row['movieId'], 'title': row['title'], 'rating': rating})
                                      calificaciones.append({

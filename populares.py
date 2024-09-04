@@ -19,4 +19,4 @@ def recomendacion_populares():
     
     return df_poster_pop
 
-# print('df_poster_pop: ', recomendacion_populares().columns)
+print('df_poster_pop: ', recomendacion_populares().columns)

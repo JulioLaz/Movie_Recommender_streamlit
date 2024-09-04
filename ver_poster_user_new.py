@@ -61,16 +61,19 @@ def view_movie_details(imdb_id):
         # st.write(type(movieId))
     else:
         st.sidebar.error("No se pudo obtener la información de la película.")
-    ssr.rate_with_stars(movieId)
+    ssr.rate_with_stars(movieId,'W')
 
-def view_poster(lista_poster, lista_originalTitle, lista_tconst, lista_averageRating):
+def view_poster(lista_poster, lista_originalTitle, lista_tconst, lista_averageRating,lista_years):
     num_posters = len(lista_poster)
+    print('0'*20)
+    print('num_posters: ',num_posters)
+    print('0'*20)
     num_rows = (num_posters + 7) // 8  # Calculate number of rows (ceiling division)
 
     for row in range(num_rows):
         cols = st.columns(8)  # Always create 8 columns
         start_index = row * 8
-        end_index = min(start_index + 8, num_posters)  # Ensure we don't go out of bounds
+        end_index = min(start_index + 8, num_posters)
 
         for i in range(start_index, end_index):
             col_index = i % 8
@@ -89,7 +92,8 @@ def view_poster(lista_poster, lista_originalTitle, lista_tconst, lista_averageRa
                     st.markdown(
                         f"""
                         <div style="display:flex; justify-content: center;height:1.9rem;margin-bottom:15px;margin-top:3px;">
-                            <div style="background-color:#0e1117;color:white;padding:0px;text-align:center;font-size:20px;font-weight:bold">
+                            <div style="position: relative; top: -3rem;right:-1rem; background-color:rgba(0,0,0,.5);border:1px solid black; border-radius:4px;padding: 0 3px"><span style="font-size:10px">year</span>{int(lista_years[i])}</div>
+                            <div style="background-color:none;font-weight:600;color:white;padding:0px;text-align:center;font-size:20px;font-weight:bold">
                             <span style="font-size:10px; padding-right:3px">rating</span>{lista_averageRating[i]}
                             </div>
                             <div style="background-color:#0e1117;color:#0e1117;padding:0px;text-align:end;font-size:calc(10px + .1vw)">
@@ -100,14 +104,6 @@ def view_poster(lista_poster, lista_originalTitle, lista_tconst, lista_averageRa
                         """, unsafe_allow_html=True
                     )
 
-                    # col1, col2 = st.columns(2)
-                    # with col1:
-                    #     if st.button('Trailer', key=f'btn_trailer_{i}'):
-                    #         video_url = f"https://www.imdb.com/title/{lista_tconst[i]}/"
-                    #         st.write(f"[Ver en imbd]({video_url})")
-                    # with col2:
-                    #     if st.button('Details', key=f'btn_details_{i}'):
-                    #         st.session_state.show_details = lista_tconst[i]
 
                 except IndexError:
                     st.error(f"Index {i} out of range for the title list.")

@@ -29,4 +29,4 @@ def recomendacion_tf_idf(movie_id):
 
    return df_poster_tfidfvec
 
-# print('recomendacion_tf_idf(movie_id): ',recomendacion_tf_idf(1))
+print('recomendacion_tf_idf(movie_id): ',recomendacion_tf_idf(1).columns)

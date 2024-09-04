@@ -128,7 +128,7 @@ def recomendacion_knn_old_user(user_input):
         watched_movies = ratings_matrix.loc[user_input].dropna().index
         recommendations_df = recommendations_df[~recommendations_df.index.isin(watched_movies)]
     recommendations_df = recommendations_df.sort_values(by='weighted_score', ascending=False).head(n_recommendations)
-    recommendations_df = recommendations_df.merge(df_movies[['title', 'genres','movieId']], left_index=True, right_on='title', how='left')
+    recommendations_df = recommendations_df.merge(df_movies[['title', 'genres','movieId','year']], left_index=True, right_on='title', how='left')
     df_average_ratings=df_ratings.groupby('movieId')['rating'].mean().reset_index()
     df_poster_knn = pd.merge(recommendations_df, df_average_ratings, on='movieId', how='left')
     df_poster_knn_final = pd.merge(df_poster_knn, df_poster, on='movieId', how='left')
@@ -136,4 +136,4 @@ def recomendacion_knn_old_user(user_input):
     df_poster_knn_final = df_poster_knn_final[~df_poster_knn_final['movieId'].isin(movies_seen)]
     return df_poster_knn_final
 
-# recomendacion_knn_old_user(50)
+print('recomendacion_knn_old_user(50):', recomendacion_knn_old_user(50).columns)

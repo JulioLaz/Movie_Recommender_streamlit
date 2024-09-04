@@ -64,9 +64,9 @@ def view_movie_details(imdb_id):
         # st.write(type(movieId))
     else:
         st.sidebar.error("No se pudo obtener la información de la película.")
-    ssr.rate_with_stars(movieId)
+    ssr.rate_with_stars(movieId,'R')
 
-def view_poster(lista_poster,lista_originalTitle,lista_tconst,lista_averageRating):
+def view_poster(lista_poster,lista_originalTitle,lista_tconst,lista_averageRating,lista_years):
     cols = st.columns(num_movies)
     for i in range(num_movies):
         with cols[i]:
@@ -75,25 +75,41 @@ def view_poster(lista_poster,lista_originalTitle,lista_tconst,lista_averageRatin
                 st.image(image, use_column_width=True)
                 st.markdown(
                     f"""
-                    <div style="background-color:#0e1117;color:red;padding:2px 0px;text-align:center;font-size:calc(12px + .1vw);height:2rem;box-sizing:unset">
+                    <div style="background-color:none; font-weight:600;color:red;padding:2px 0px;text-align:center;font-size:calc(12px + .1vw);height:2rem;box-sizing:unset">
                         {lista_originalTitle[i][:17] + "..." if len(lista_originalTitle[i]) > 22 else lista_originalTitle[i]}
                     </div>
                     """, unsafe_allow_html=True
                 )
                 
-                st.markdown(
-                    f"""
-                    <div style="display:flex; justify-content: center;height:1.9rem;margin-bottom:15px;margin-top:3px;">
-                        <div style="background-color:#0e1117;color:white;padding:0px;text-align:center;font-size:20px;font-weight:bold">
-                        <span style="font-size:10px; padding-right:3px">rating</span>{lista_averageRating[i]}
+                if lista_years[i]!=0:
+                    st.markdown(
+                        f"""
+                            <div style="display:flex; justify-content: center;height:1.9rem;margin-bottom:15px;margin-top:3px;">
+                            <div style="position: relative; top: -3rem;right:-1rem; background-color:rgba(0,0,0,.5);border:1px solid black; border-radius:4px;padding: 0 3px"><span style="font-size:10px">year</span>{lista_years[i]}</div>
+                            <div style="background-color:#0e1117;color:white;padding:0px;text-align:center;font-size:20px;font-weight:bold">
+                            <span style="font-size:10px; padding-right:3px">rating</span>{lista_averageRating[i]}
+                            </div>
+                            <div style="background-color:#0e1117;color:#0e1117;padding:0px;text-align:end;font-size:calc(10px + .1vw)">
+                                {"⭐" * min(int(float(lista_averageRating[i])), 5)}<br>
+                                {"⭐" * (int(float(lista_averageRating[i])) - 5) if int(float(lista_averageRating[i])) > 5 else "."}
+                            </div>
                         </div>
-                        <div style="background-color:#0e1117;color:#0e1117;padding:0px;text-align:end;font-size:calc(10px + .1vw)">
-                            {"⭐" * min(int(float(lista_averageRating[i])), 5)}<br>
-                            {"⭐" * (int(float(lista_averageRating[i])) - 5) if int(float(lista_averageRating[i])) > 5 else "."}
+                        """, unsafe_allow_html=True
+                    )
+                else:
+                    st.markdown(
+                        f"""
+                            <div style="display:flex; justify-content: center;height:1.9rem;margin-bottom:15px;margin-top:3px;">
+                            <div style="background-color:#0e1117;color:white;padding:0px;text-align:center;font-size:20px;font-weight:bold">
+                            <span style="font-size:10px; padding-right:3px">rating</span>{lista_averageRating[i]}
+                            </div>
+                            <div style="background-color:#0e1117;color:#0e1117;padding:0px;text-align:end;font-size:calc(10px + .1vw)">
+                                {"⭐" * min(int(float(lista_averageRating[i])), 5)}<br>
+                                {"⭐" * (int(float(lista_averageRating[i])) - 5) if int(float(lista_averageRating[i])) > 5 else "."}
+                            </div>
                         </div>
-                    </div>
-                    """, unsafe_allow_html=True
-                )
+                        """, unsafe_allow_html=True
+                    )
 
                 # def open_imdb_video(url):
                     # url = f"https://www.imdb.com/title/{tt}/"

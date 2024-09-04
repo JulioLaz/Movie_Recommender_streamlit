@@ -9,12 +9,12 @@ import similitud_tfidf as sim_tfidf
 import similitud_knn as sim_knn
 import pandas as pd
 import ver_poster
-import star_rating as stars
+# import star_rating as stars
 from collections import Counter
 import text_giro as tg
 import ver_poster_user_new as vpun
 import img_home 
-import view_posters
+import view_posters as view_posters
 # st.set_page_config(page_title="movie recomendation", page_icon='🎦', layout="wide")
 # st.set_page_config(layout="wide")
 
@@ -58,7 +58,8 @@ elif menu_id == "Most Populars":
     lista_originalTitle = list(df['title'].head(mun_movies))
     lista_tconst = list(df['imdb_id'].head(mun_movies))
     lista_averageRating = list(round(df['mean_rating'],1).head(mun_movies))
-    ver_poster.view_poster(lista_poster,lista_originalTitle,lista_tconst,lista_averageRating)
+    lista_years = list(df['year'].head(mun_movies))
+    ver_poster.view_poster(lista_poster,lista_originalTitle,lista_tconst,lista_averageRating,lista_years)
     # vp.view_poster(lista_poster,lista_originalTitle,lista_tconst,lista_averageRating)
 
 elif menu_id == "Top Rated":
@@ -84,7 +85,9 @@ elif menu_id == "Top Rated":
             lista_originalTitle = list(recommended_movies['title'].head(mun_movies))
             lista_tconst = list(recommended_movies['imdb_id'].head(mun_movies))
             lista_averageRating = list(round(recommended_movies['rating'], 2).head(mun_movies))
-            ver_poster.view_poster(lista_poster,lista_originalTitle,lista_tconst,lista_averageRating)
+            lista_years = list(recommended_movies['year'].head(mun_movies))
+
+            ver_poster.view_poster(lista_poster,lista_originalTitle,lista_tconst,lista_averageRating,lista_years)
             # vp.view_poster(lista_poster, lista_originalTitle, lista_tconst, lista_averageRating)
 
 elif menu_id == "Community": #
@@ -108,8 +111,8 @@ elif menu_id == "Community": #
             lista_originalTitle = list(recommended_movies['title'].head(mun_movies))
             lista_tconst = list(recommended_movies['imdb_id'].head(mun_movies))
             lista_averageRating = list(round(recommended_movies['rating'], 2).head(mun_movies))
-            # vp.view_poster(lista_poster, lista_originalTitle, lista_tconst, lista_averageRating)
-            ver_poster.view_poster(lista_poster,lista_originalTitle,lista_tconst,lista_averageRating)
+            lista_years = list(recommended_movies['year'].head(mun_movies))
+            ver_poster.view_poster(lista_poster,lista_originalTitle,lista_tconst,lista_averageRating,lista_years)
 
 elif menu_id == "Big fans":
     # st.title('Top picks for our biggest fans: ')
@@ -154,8 +157,8 @@ elif menu_id == "Big fans":
             lista_originalTitle = list(recommended_movies['title'].head(mun_movies))
             lista_tconst = list(recommended_movies['imdb_id'].head(mun_movies))
             lista_averageRating = list(round(recommended_movies['rating'], 2).head(mun_movies))
-            # vp.view_poster(lista_poster, lista_originalTitle, lista_tconst, lista_averageRating)
-            ver_poster.view_poster(lista_poster,lista_originalTitle,lista_tconst,lista_averageRating)
+            lista_years = list(recommended_movies['year'].head(mun_movies))
+            ver_poster.view_poster(lista_poster,lista_originalTitle,lista_tconst,lista_averageRating,lista_years)
 
 elif menu_id == "Just for you":
     df_final=ddbb.df_final()
@@ -173,8 +176,8 @@ elif menu_id == "Just for you":
             lista_originalTitle = list(recommended_movies['title'].head(mun_movies))
             lista_tconst = list(recommended_movies['imdb_id'].head(mun_movies))
             lista_averageRating = list(round(recommended_movies['rating'], 2).head(mun_movies))
-            # vp.view_poster(lista_poster, lista_originalTitle, lista_tconst, lista_averageRating)
-            ver_poster.view_poster(lista_poster,lista_originalTitle,lista_tconst,lista_averageRating)
+            lista_years = list(recommended_movies['year'].head(mun_movies))
+            ver_poster.view_poster(lista_poster,lista_originalTitle,lista_tconst,lista_averageRating,lista_years)
 
     st.write(f"""<h1 style="color: gold; font-size: 2rem; height: 3rem; text-align: center; padding: 0px;margin:20px">
                Here are the movies you've already rated!
@@ -183,8 +186,8 @@ elif menu_id == "Just for you":
     lista_originalTitle = list(df_poster_final['title'])
     lista_tconst = list(df_poster_final['imdb_id'])
     lista_averageRating = list(round(df_poster_final['rating'], 2))
-
-    vpun.view_poster(lista_poster,lista_originalTitle,lista_tconst,lista_averageRating)
+    lista_years = list(df_poster_final['year'])
+    vpun.view_poster(lista_poster,lista_originalTitle,lista_tconst,lista_averageRating,lista_years)
 
 
 elif menu_id == "Search movies":
@@ -201,7 +204,6 @@ elif menu_id == "Search movies":
         default_index = movie_titles.index(title) if title in movie_titles else 0
         selected_title = st.selectbox("", movie_titles, index=default_index, label_visibility="collapsed")
 
-
     # tdz.title_poster_just('', 'Movie recommendations just for you!')
     df_final = df_final.groupby(['movieId','title']).mean('rating').reset_index()
     df_poster_final = pd.merge(df_final, df_poster, on='movieId', how='left')
@@ -214,7 +216,10 @@ elif menu_id == "Search movies":
     lista_originalTitle = list(df_poster_final['title'])
     lista_tconst = list(df_poster_final['imdb_id'])
     lista_averageRating = list(round(df_poster_final['rating'], 2))
-    view_posters.view_poster(lista_poster,lista_originalTitle,lista_tconst,lista_averageRating)
+    lista_years = list(df_poster_final['year'])
+
+    view_posters.view_movie_details_new_user(lista_tconst[0],lista_averageRating[0])
+    # view_posters.view_poster_new_user(lista_poster,lista_originalTitle,lista_tconst,lista_averageRating,lista_years)
 
 
 elif menu_id == "Login":
@@ -228,8 +233,8 @@ else:
     lista_originalTitle = list(df_genre['title'].head(mun_movies))
     lista_tconst = list(df_genre['imdb_id'].head(mun_movies))
     lista_averageRating = list(round(df_genre['rating'],1).head(mun_movies))
-    # vp.view_poster(lista_poster,lista_originalTitle,lista_tconst,lista_averageRating)
-    ver_poster.view_poster(lista_poster,lista_originalTitle,lista_tconst,lista_averageRating)
+    lista_years = list(df_genre['year'])
+    ver_poster.view_poster(lista_poster,lista_originalTitle,lista_tconst,lista_averageRating,lista_years)
 
 # cloud.imagen_cloud(df,'poster_path')
 placeholder = st.empty()
