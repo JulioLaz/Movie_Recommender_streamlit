@@ -109,7 +109,7 @@ def df_last_years():
     return df
 # print("df_final():",df_final().head())
 
-@st.cache_data(ttl=300)
+# @st.cache_data(ttl=300)
 def new_user_rate():
     new_user=dbsql.extraer_datos()
     # new_user=pd.read_csv('user_ratings.csv')
