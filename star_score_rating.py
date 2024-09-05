@@ -12,33 +12,39 @@ engine = create_engine(DATABASE_URL)
 df = ddbb.df_final()
 df_poster = ddbb.load_df_poster()
 df = df.merge(df_poster, on='movieId', how='left')
-df_file = "user_ratings.csv"
-
 
 def guardar_datos(df_ratings):
     DATABASE_URL = st.secrets["DATABASE_URL"]
     engine = create_engine(DATABASE_URL)
-    df_ratings.to_sql('ratings', engine, if_exists='append', index=False)
-    st.cache_data.clear()  # Clear the cache after saving data
-    st.experimental_rerun()  # Rerun the app to reflect the updates
+    if not df_ratings.empty:
+        df_ratings.to_sql('ratings', engine, if_exists='append', index=False)
+        st.cache_data.clear()  # Clear the cache after saving data
+        st.session_state.reload_data = True  # Set flag to reload data
+      #   st.experimental_rerun()  # Rerun the app to reflect the updates
+    else:
+        print("No data to save.")
+
+# def guardar_datos(df_ratings):
+#     DATABASE_URL = st.secrets["DATABASE_URL"]
+#     engine = create_engine(DATABASE_URL)
+#     if not df_ratings.empty:
+#         df_ratings.to_sql('ratings', engine, if_exists='append', index=False)
+#         st.cache_data.clear()  # Clear the cache after saving data
+#     else:
+#         print("No data to save.")
 
 
 def rate_with_stars(movie_ids,color):
-      global df_ratings  # Declare df_ratings as global
+      global df_ratings 
+      df_ratings = pd.DataFrame(columns=["userId", "movieId", "title", "rating","timestamp"])
 
-      if os.path.exists(df_file):
-         df_ratings = pd.read_csv(df_file)
-      else:
-         df_ratings = pd.DataFrame(columns=["userId", "movieId", "title", "rating"])
-
-      # User input for userId
       # userId = st.number_input("Enter your user ID", min_value=df.userId.max()+1, step=1)
       userId=777
-
       st.write("""<h2 style="color: gold; font-size: 1.4rem; height: 2.5rem; text-align: center; padding: 0px;margin-top:10px">
                How many stars for this film?
                </h2>""", unsafe_allow_html=True)
-      if userId in df["userId"].unique() or userId in df_ratings["userId"].unique():
+      # if userId in df["userId"].unique() or userId in df_ratings["userId"].unique():
+      if userId==777:
          def calificar(df_details, userId):
             calificaciones = []
             for index, row in df_details.iterrows():
@@ -49,7 +55,7 @@ def rate_with_stars(movie_ids,color):
                   rating = st_star_rating("", maxValue=5, defaultValue=0, key=f"rating_{row['movieId']}_{userId}",
                   # rating = st_star_rating("", maxValue=5, defaultValue=0, key=f"rating_{row['movieId']}",
                            customCSS = "div {background-color: rgb(14, 17, 23);border:none;display: flex;justify-content: center; align-items: center;height: 4.5rem;padding-top: 3px;width: 100%},h3 {display: none}, #root > div > ul {display: flex;justify-content: center;}")
-                  if rating > 0:
+               if rating > 0:
                      # calificaciones.append({'userId': userId, 'movieId': row['movieId'], 'title': row['title'], 'rating': rating})
                                      calificaciones.append({
                     'userId': userId, 
@@ -91,12 +97,8 @@ def rate_with_stars(movie_ids,color):
 
          df_details = crear_dataframe_con_detalles([movie_ids])
          calificar(df_details, userId)
-
-
-         # insert_stmt = insert(Ratings).values(df_ratings.to_dict(orient='records'))
-         # engine.execute(insert_stmt)
-
-         # df_ratings.to_sql('ratings', engine, if_exists='append', index=False)
          guardar_datos(df_ratings)
+         # df_ratings.to_sql('ratings', engine, if_exists='append', index=False)
+         # ddbb.df_concat()
 
          # df_ratings.to_csv(df_file, index=False)

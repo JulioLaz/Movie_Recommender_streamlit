@@ -109,17 +109,19 @@ df_final = df_final.drop_duplicates(subset=['userId', 'title'])
 ratings_matrix = df_final.pivot(index='userId', columns='title', values='rating')
 avg_ratings = ratings_matrix.mean(axis=1)
 ratings_matrix_normalized = ratings_matrix.sub(avg_ratings, axis=0).fillna(0)
-knn_model = NearestNeighbors(metric='cosine', algorithm='brute')
+knn_model = NearestNeighbors(metric='cosine', algorithm='auto')
+# knn_model = NearestNeighbors(metric='cosine', algorithm='brute')
 knn_model.fit(ratings_matrix_normalized)
 
 def recomendacion_knn_old_user(user_input):
     n_recommendations=10
     if isinstance(user_input, int):
-        idx = ratings_matrix_normalized.index.get_loc(user_input)
+        idx = ratings_matrix.index.get_loc(user_input)
+        # idx = ratings_matrix_normalized.index.get_loc(user_input)
         distances, indices = knn_model.kneighbors(ratings_matrix_normalized.iloc[idx].values.reshape(1, -1), n_neighbors=n_recommendations + 1)
-    else:
-        user_ratings = pd.Series(user_input).fillna(0).sub(avg_ratings.mean()).values.reshape(1, -1)
-        distances, indices = knn_model.kneighbors(user_ratings, n_neighbors=n_recommendations + 1)
+    # else:
+    #     user_ratings = pd.Series(user_input).fillna(0).sub(avg_ratings.mean()).values.reshape(1, -1)
+    #     distances, indices = knn_model.kneighbors(user_ratings, n_neighbors=n_recommendations + 1)
     distances, indices = distances.flatten()[1:], indices.flatten()[1:]
     similar_users_ratings = ratings_matrix_normalized.iloc[indices, :]
     weighted_ratings = similar_users_ratings.T.dot(1 - distances) / (1 - distances).sum()
@@ -134,6 +136,7 @@ def recomendacion_knn_old_user(user_input):
     df_poster_knn_final = pd.merge(df_poster_knn, df_poster, on='movieId', how='left')
     movies_seen = df_ratings[df_ratings['userId']==user_input]['movieId']
     df_poster_knn_final = df_poster_knn_final[~df_poster_knn_final['movieId'].isin(movies_seen)]
+    # print('recommendations_df:',recommendations_df)
     return df_poster_knn_final
 
 # print('recomendacion_knn_old_user(50):', recomendacion_knn_old_user(50).columns)

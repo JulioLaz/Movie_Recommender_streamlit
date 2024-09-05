@@ -65,9 +65,9 @@ def view_movie_details(imdb_id):
 
 def view_poster(lista_poster, lista_originalTitle, lista_tconst, lista_averageRating,lista_years):
     num_posters = len(lista_poster)
-    print('0'*20)
-    print('num_posters: ',num_posters)
-    print('0'*20)
+    # print('0'*20)
+    # print('num_posters: ',num_posters)
+    # print('0'*20)
     num_rows = (num_posters + 7) // 8  # Calculate number of rows (ceiling division)
 
     for row in range(num_rows):

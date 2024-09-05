@@ -1,26 +1,21 @@
 import streamlit as st
-import populares as pop
 import ddbb
 import text_desplazado as tdz
 import menu
 import styles
-import similitud as sim
-import similitud_tfidf as sim_tfidf
-import similitud_knn as sim_knn
-import pandas as pd
+import big_fans
 import ver_poster
-# import star_rating as stars
-from collections import Counter
-import text_giro as tg
-import ver_poster_user_new as vpun
+import title_poster_genre as tpg
 import img_home 
 import view_posters as view_posters
-# st.set_page_config(page_title="movie recomendation", page_icon='🎦', layout="wide")
-# st.set_page_config(layout="wide")
+import just_for_you
+import search_movies
+import community
+import top_rated
+import most_populars
 
 df_movies = ddbb.df_merge_movies_ratings()
-
-mun_movies= 8
+mun_movies =8
 
 styles.styles_main()
 css_style = """
@@ -37,7 +32,6 @@ css_style = """
 </style>
 """
 
-# Apply the CSS style
 st.markdown(css_style, unsafe_allow_html=True)
 
 menu_data,over_theme,menu_id=menu.menu()
@@ -46,188 +40,35 @@ if menu_id == "Home":
     tdz.title_poster('', 'Welcome to Movie Recommendations!')
     img_home.create_movie_welcome_page()
 
-elif menu_id == "Genres":
-    st.title("Movie Genres")
-    st.write("Explore movies by genre")
-
 elif menu_id == "Most Populars":
-    # st.title("Most popular movies among our users:")
-    ver_poster.title_poster_genre('','Most popular movies among our users!')
-    df=pop.recomendacion_populares()
-    lista_poster = list(df['poster_path_full'].head(mun_movies))
-    lista_originalTitle = list(df['title'].head(mun_movies))
-    lista_tconst = list(df['imdb_id'].head(mun_movies))
-    lista_averageRating = list(round(df['mean_rating'],1).head(mun_movies))
-    lista_years = list(df['year'].head(mun_movies))
-    ver_poster.view_poster(lista_poster,lista_originalTitle,lista_tconst,lista_averageRating,lista_years)
-    # vp.view_poster(lista_poster,lista_originalTitle,lista_tconst,lista_averageRating)
+    most_populars.most_populars()
 
 elif menu_id == "Top Rated":
-    df_final=ddbb.df_final()
-    df_final = df_final.drop_duplicates(subset='title', keep='first')
-    col1, col2 = st.columns(2)
-    with col1:
-        ver_poster.title_poster_genre('','People who watched this movie also loved these!')
-
-        # st.subheader("People who watched this movie also loved these!")
-    with col2:
-        movie_titles = df_final['title'].tolist()
-        title='Titanic'
-        default_index = movie_titles.index(title) if title in movie_titles else 0
-        selected_title = st.selectbox("Select a movie you like: Connect with other movie enthusiasts and get personalized recommendations", movie_titles, index=default_index)
-
-    if selected_title:
-        movie_id = df_final[df_final['title'] == selected_title]['movieId'].values[0]
-        recommended_movies = sim_tfidf.recomendacion_tf_idf(movie_id)
-
-        if 'poster_path_full' in recommended_movies.columns:
-            lista_poster = list(recommended_movies['poster_path_full'].head(mun_movies))
-            lista_originalTitle = list(recommended_movies['title'].head(mun_movies))
-            lista_tconst = list(recommended_movies['imdb_id'].head(mun_movies))
-            lista_averageRating = list(round(recommended_movies['rating'], 2).head(mun_movies))
-            lista_years = list(recommended_movies['year'].head(mun_movies))
-
-            ver_poster.view_poster(lista_poster,lista_originalTitle,lista_tconst,lista_averageRating,lista_years)
-            # vp.view_poster(lista_poster, lista_originalTitle, lista_tconst, lista_averageRating)
+    top_rated.top_rated()
 
 elif menu_id == "Community": #
-    df_final=ddbb.df_final()
-    df_final = df_final.drop_duplicates(subset='title', keep='first')
-    col1, col2 = st.columns(2)
-    with col1:
-        ver_poster.title_poster_genre('','Fans of this movie also enjoyed these!')
-    with col2:
-        movie_titles = df_final['title'].tolist()
-        title='Matrix, The'
-        default_index = movie_titles.index(title) if title in movie_titles else 0
-        selected_title = st.selectbox("Select a movie you like: Connect with other movie enthusiasts and get personalized recommendations", movie_titles, index=default_index)
-
-    if selected_title:
-        movie_id = df_final[df_final['title'] == selected_title]['movieId'].values[0]
-        recommended_movies = sim.recomendacion_jaccard(movie_id)
-
-        if 'poster_path_full' in recommended_movies.columns:
-            lista_poster = list(recommended_movies['poster_path_full'].head(mun_movies))
-            lista_originalTitle = list(recommended_movies['title'].head(mun_movies))
-            lista_tconst = list(recommended_movies['imdb_id'].head(mun_movies))
-            lista_averageRating = list(round(recommended_movies['rating'], 2).head(mun_movies))
-            lista_years = list(recommended_movies['year'].head(mun_movies))
-            ver_poster.view_poster(lista_poster,lista_originalTitle,lista_tconst,lista_averageRating,lista_years)
+    community.community()
 
 elif menu_id == "Big fans":
-    # st.title('Top picks for our biggest fans: ')
-    df_final=ddbb.df_final_original()
-    # movies = df_final.groupby('userId')['rating'].count().reset_index().sort_values(by='rating', ascending=False)
-    # movies_count_user=list(movies.userId)
-    # usuario = st.selectbox('Search and select a user', movies_count_user)
-    movies = df_final.groupby('userId')['rating'].count().reset_index().sort_values(by='rating', ascending=False)
-    # user_rating_counts = dict(zip(movies.userId, zip(movies.rating, movies.genres)))
-    # user_options = [f"Usuario {userId} - voted movies: {count} - genres: {genres}" for userId, (count, genres) in user_rating_counts.items()]
-    user_rating_counts = dict(zip(movies.userId, movies.rating))
-    user_options = [f"Usuario {userId} - voted movies: {count}" for userId, count in user_rating_counts.items()]
-    col1,col2=st.columns(2)
-    with col1:
-        tg.giro('','Top picks for our biggest fans')
-        # st.subheader('Top picks for our biggest fans: ')
-
-    with col2:
-        col1,col2=st.columns(2)
-        with col1:
-
-            selected_user_option = st.selectbox('', user_options,label_visibility="collapsed")
-            selected_user_id = int(selected_user_option.split()[1])    
-
-            user_movies = df_final[df_final['userId'] == selected_user_id]
-            selected_movie_genres = user_movies['genre_set']
-            # selected_genres = set().union(*selected_movie_genres)
-            all_genres = [genre for genre_set in selected_movie_genres for genre in genre_set]
-            genre_counts = Counter(all_genres)
-            df_genres = pd.DataFrame.from_dict(genre_counts, orient='index', columns=['Count']).reset_index()
-            df_genres.rename(columns={'index': 'Genre'}, inplace=True)
-            df_genres=df_genres.nlargest(10,'Count')
-            user_genres_counts = dict(zip(df_genres.Genre, df_genres.Count))
-            user_options_genre = [f"{Genre} - Count: {Count}" for Genre, Count in user_genres_counts.items()]
-
-        with col2:
-            with st.expander("View Top 10 Genres chosen by him user"):
-                st.write(df_genres.to_html(index=False), unsafe_allow_html=True)
-    recommended_movies = sim_knn.recomendacion_knn_old_user(selected_user_id)#recomendacion_knn_old_user
-    if 'poster_path_full' in recommended_movies.columns:
-            lista_poster = list(recommended_movies['poster_path_full'].head(mun_movies))
-            lista_originalTitle = list(recommended_movies['title'].head(mun_movies))
-            lista_tconst = list(recommended_movies['imdb_id'].head(mun_movies))
-            lista_averageRating = list(round(recommended_movies['rating'], 2).head(mun_movies))
-            lista_years = list(recommended_movies['year'].head(mun_movies))
-            ver_poster.view_poster(lista_poster,lista_originalTitle,lista_tconst,lista_averageRating,lista_years)
-
+    big_fans.big_fans()
+    
 elif menu_id == "Just for you":
-    df_final=ddbb.df_final()
-    df_poster=ddbb.load_df_poster()
-
-    tdz.title_poster_just('', 'Movie recommendations just for you!')
-
-    recommended_movies,movies_seen = sim_knn.recomendacion_knn(777)
-    df_final = df_final[df_final['movieId'].isin(movies_seen)]
-    df_final = df_final.groupby(['movieId','title']).mean('rating').reset_index()
-    df_poster_final = pd.merge(df_final, df_poster, on='movieId', how='left')
-
-    if 'poster_path_full' in recommended_movies.columns:
-            lista_poster = list(recommended_movies['poster_path_full'].head(mun_movies))
-            lista_originalTitle = list(recommended_movies['title'].head(mun_movies))
-            lista_tconst = list(recommended_movies['imdb_id'].head(mun_movies))
-            lista_averageRating = list(round(recommended_movies['rating'], 2).head(mun_movies))
-            lista_years = list(recommended_movies['year'].head(mun_movies))
-            ver_poster.view_poster(lista_poster,lista_originalTitle,lista_tconst,lista_averageRating,lista_years)
-
-    st.write(f"""<h1 style="color: gold; font-size: 2rem; height: 3rem; text-align: center; padding: 0px;margin:20px">
-               Here are the movies you've already rated!
-               </h1>""", unsafe_allow_html=True)
-    lista_poster = list(df_poster_final['poster_path_full'])
-    lista_originalTitle = list(df_poster_final['title'])
-    lista_tconst = list(df_poster_final['imdb_id'])
-    lista_averageRating = list(round(df_poster_final['rating'], 2))
-    lista_years = list(df_poster_final['year'])
-    vpun.view_poster(lista_poster,lista_originalTitle,lista_tconst,lista_averageRating,lista_years)
-
+    just_for_you.just_for_you_section()
 
 elif menu_id == "Search movies":
-    df_final=ddbb.df_final()
-    df_poster=ddbb.load_df_poster()
-
-    col1, col2 = st.columns(2)
-    with col1:
-        ver_poster.title_poster_genre('','Find the movie you like best!')
-    with col2:
-        df_final=df_final.drop_duplicates('movieId')
-        movie_titles = df_final['title'].tolist()
-        title='Matrix, The'
-        default_index = movie_titles.index(title) if title in movie_titles else 0
-        selected_title = st.selectbox("", movie_titles, index=default_index, label_visibility="collapsed")
-
-    # tdz.title_poster_just('', 'Movie recommendations just for you!')
-    df_final = df_final.groupby(['movieId','title']).mean('rating').reset_index()
-    df_poster_final = pd.merge(df_final, df_poster, on='movieId', how='left')
-    df_poster_final = df_poster_final[df_poster_final['title'] == selected_title]
-    # st.write(f"""<h1 style="color: gold; font-size: 2rem; height: 3rem; text-align: center; padding: 0px;margin:20px">
-    #            Here are the movies you've already rated!
-    #            </h1>""", unsafe_allow_html=True)
-    # st.write(df_poster_final)
-    lista_poster = list(df_poster_final['poster_path_full'])
-    lista_originalTitle = list(df_poster_final['title'])
-    lista_tconst = list(df_poster_final['imdb_id'])
-    lista_averageRating = list(round(df_poster_final['rating'], 2))
-    lista_years = list(df_poster_final['year'])
-
-    view_posters.view_movie_details_new_user(lista_tconst[0],lista_averageRating[0])
-    # view_posters.view_poster_new_user(lista_poster,lista_originalTitle,lista_tconst,lista_averageRating,lista_years)
-
+    search_movies.search_movies()
 
 elif menu_id == "Login":
     st.title("Login")
     st.write("Please log in to access personalized recommendations")
 
+
+elif menu_id == "Genres":
+    st.write("")
+
 else:
-    ver_poster.title_poster_genre(menu_id,'Genre')
+    
+    tpg.title_poster_genre(menu_id,'Genre')
     df_genre = df_movies[df_movies['genres'] == menu_id].sort_values(by='rating', ascending=False)
     lista_poster = list(df_genre['poster_path_full'].head(mun_movies))
     lista_originalTitle = list(df_genre['title'].head(mun_movies))

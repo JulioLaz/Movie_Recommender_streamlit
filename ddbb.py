@@ -109,14 +109,15 @@ def df_last_years():
     return df
 # print("df_final():",df_final().head())
 
-# @st.cache_data(ttl=300)
+@st.cache_data(ttl=300)
 def new_user_rate():
     new_user=dbsql.extraer_datos()
     return new_user
 
-# @st.cache_data(ttl=300)
+@st.cache_data(ttl=300)
 def df_concat():
     df_new_ratings=new_user_rate()[['userId','movieId','rating']]
+    # df_new_ratings=dbsql.extraer_datos()[['userId','movieId','rating']]
     df_ratings=load_df_ratings()[['userId','movieId','rating']]
     df = pd.concat([df_ratings, df_new_ratings])
     df = df.groupby(['userId','movieId']).mean('rating').reset_index()
