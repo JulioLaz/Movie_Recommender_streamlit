@@ -1,10 +1,9 @@
 import streamlit as st
-import ddbb
 import text_desplazado as tdz
 import menu
 import styles
 import big_fans
-import ver_poster
+import select_genres
 import title_poster_genre as tpg
 import img_home 
 import view_posters as view_posters
@@ -14,8 +13,7 @@ import community
 import top_rated
 import most_populars
 
-df_movies = ddbb.df_merge_movies_ratings()
-mun_movies =8
+num_movies =8
 
 styles.styles_main()
 css_style = """
@@ -62,20 +60,10 @@ elif menu_id == "Login":
     st.title("Login")
     st.write("Please log in to access personalized recommendations")
 
-
 elif menu_id == "Genres":
     st.write("")
 
 else:
-    
-    tpg.title_poster_genre(menu_id,'Genre')
-    df_genre = df_movies[df_movies['genres'] == menu_id].sort_values(by='rating', ascending=False)
-    lista_poster = list(df_genre['poster_path_full'].head(mun_movies))
-    lista_originalTitle = list(df_genre['title'].head(mun_movies))
-    lista_tconst = list(df_genre['imdb_id'].head(mun_movies))
-    lista_averageRating = list(round(df_genre['rating'],1).head(mun_movies))
-    lista_years = list(df_genre['year'])
-    ver_poster.view_poster(lista_poster,lista_originalTitle,lista_tconst,lista_averageRating,lista_years)
+    select_genres.select_genres()
 
-# cloud.imagen_cloud(df,'poster_path')
 placeholder = st.empty()

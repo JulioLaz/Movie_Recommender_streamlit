@@ -136,5 +136,5 @@ def limpiar_ddbb_postgres():
 
 # crear_conexion()
 # borrar_todas_las_tablas()
-# borrar_todas_las_filas()
+borrar_todas_las_filas()
 # obtener_nombres_de_tablas()

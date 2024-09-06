@@ -1,10 +1,10 @@
 import streamlit as st
 
-def title_poster_just(menu_id, text):
+def title_poster_just(size,text):
     st.markdown(f"""
     <style>
     @keyframes scroll {{
-      0% {{ transform: translateX(100%); }}
+      0% {{ transform: translateX(50vw); }}
       100% {{ transform: translateX(-70%); }}
     }}
 
@@ -27,7 +27,7 @@ def title_poster_just(menu_id, text):
     }}
 
     .movie-title-text {{
-      font-size: 4rem;
+      font-size: {size};
       font-weight: bold;
       text-transform: uppercase;
       background: linear-gradient(to right, #8f6B29, #FDE08D, #DF9F28);
@@ -41,7 +41,7 @@ def title_poster_just(menu_id, text):
 
     <div class="movie-title">
       <div class="movie-title-inner">
-        <span class="movie-title-text">{text} {menu_id.upper()}</span>
+        <span class="movie-title-text">{text}</span>
       </div>
     </div>
     """, unsafe_allow_html=True)
