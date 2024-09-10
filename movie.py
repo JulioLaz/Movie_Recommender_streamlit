@@ -64,6 +64,6 @@ elif menu_id == "Genres":
     st.write("")
 
 else:
-    select_genres.select_genres()
+    select_genres.select_genres(menu_id)
 
 placeholder = st.empty()
